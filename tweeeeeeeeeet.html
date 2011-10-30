@@ -1,0 +1,52 @@
+<html>
+<script src='tweeeeeeeeeet.js'></script>
+<script type="text/javascript">
+	function shorten() {
+		//document.getElementById('result').textContent = document.getElementById('yourTweet').value;
+		
+		var program = "shortenTweet: '" + document.getElementById('yourTweet').value + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
+		document.getElementById('result').textContent = parser.parse(program);
+		showResultLength();
+	}
+
+	function showLength() {
+		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length
+	}
+
+	function showResultLength() {
+		document.getElementById('resultLength').textContent = document.getElementById('result').textContent.length
+	}
+</script>
+<body>
+<title>tweeeeeeeeeet</title>
+<form>
+	<h1>Your tweeeeeeeeeet</h1>
+	<textarea id='yourTweet' rows=8 cols=80 onchange='showLength()'></textarea>
+	<br />
+	<button type='button' id='shortenBotton' onClick='shorten()'>Shorten your tweet</button>   <label>Lenght: </label><span id='yourTweetLength' >0</span>
+	<br />
+	<br />
+	
+	<h1>Your tweet shortened</h1>
+	<textarea id='result' readonly=true rows=8 cols=80' style='{background-color:#d0e4fe;}'>Your tweet shortened here.</textarea>
+	<br />
+	<label>Lenght: </label><span id='resultLength' >0</span>
+	<br />
+	<br />
+
+	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
+	<textarea id='tweeeeeeeeeetProgram' rows=80 cols=60 >replaceUntilFit:
+(
+  substring: '  ' -> ' '
+  substring: ' .' -> '.'
+  substring: ' :' -> ':'
+  substring: ' ;' -> ';' 
+  'with' -> 'w/'
+  'without' -> 'w/o'
+  'before' -> 'b/f'
+  'because' -> 'b/c'
+  'and' -> '&'
+)</textarea>
+</form>
+</body>
+</html> 
