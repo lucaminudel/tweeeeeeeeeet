@@ -23,7 +23,7 @@
 						indexBegin = -1;
 					}
 					
-					if (subString === true && previousChar.match(/\s/) & successorChar.match(/\s/))) {
+					if (subString === true && previousChar.match(/\s/) & successorChar.match(/\s/)) {
 						indexBegin = -1;
 					}
 
