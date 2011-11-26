@@ -10,11 +10,27 @@
 	}
 
 	function showLength() {
-		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length
+		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length;
+	}
+
+	function tweetWithShortenedUrlsLength(tweet) {
+		var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+		var length = tweet.length;
+		var shortUrlsLength = 0;
+		
+		var match;
+		while (match = tweet.match(urlRegExp)) {
+		
+			tweet = tweet.replace(urlRegExp, 'x');
+			length = tweet.length;
+			shortUrlsLength += 19;
+		}
+		
+		return (length + shortUrlsLength);
 	}
 
 	function showResultLength() {
-		document.getElementById('resultLength').textContent = document.getElementById('result').textContent.length
+		document.getElementById('resultLength').textContent = tweetWithShortenedUrlsLength(document.getElementById('result').textContent);
 	}
 </script>
 <body>
