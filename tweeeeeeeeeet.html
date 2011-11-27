@@ -2,10 +2,18 @@
 <script src='tweeeeeeeeeet.js'></script>
 <script type="text/javascript">
 	function shorten() {
-		//document.getElementById('result').textContent = document.getElementById('yourTweet').value;
 		
+		document.getElementById('errorMessage').textContent = '';
 		var program = "shortenTweet: '" + document.getElementById('yourTweet').value + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
-		document.getElementById('result').textContent = parser.parse(program);
+		var parseResult = '';
+		try{
+			 parseResult = parser.parse(program);
+		}
+		catch(e) {
+			document.getElementById('errorMessage').textContent = e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message;
+		}
+		
+		document.getElementById('result').textContent = parseResult;
 		showResultLength();
 	}
 
@@ -51,12 +59,12 @@
 	<br />
 
 	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
-	<textarea id='tweeeeeeeeeetProgram' rows=80 cols=60 >replaceUntilFit:
+    <span id='errorMessage' style="color:red"></span>
+	<br />
+	<br />
+<	<textarea id='tweeeeeeeeeetProgram' rows=80 cols=60 >replaceUntilFit:
 (
   substring: '  ' -> ' '
-  substring: ' .' -> '.'
-  substring: ' :' -> ':'
-  substring: ' ;' -> ';' 
   'with' -> 'w/'
   'without' -> 'w/o'
   'before' -> 'b4'
@@ -122,8 +130,7 @@
    'that' -> 'Dt'
    'this' -> 'Ds'
    'your' -> 'Ur'
- )
  )</textarea>
-</form>
+ /form>
 </body>
 </html> 
