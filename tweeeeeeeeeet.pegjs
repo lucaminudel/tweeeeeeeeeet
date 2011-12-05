@@ -34,7 +34,7 @@
 				}
 				
 				function copyCase(from, to) {
-					if (to === from.toUpperCase()) {
+					if (to === to.toUpperCase()) {
 						return to.toUpperCase();
 					}
 
