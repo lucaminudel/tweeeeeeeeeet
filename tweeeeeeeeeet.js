@@ -896,8 +896,8 @@ parser = (function(){
 				}
 				
 				function copyCase(from, to) {
-					if (to === to.toUpperCase()) {
-						return to.toUpperCase();
+					if (to !== to.toLowerCase()) {
+						return to;
 					}
 
 					if (from === from.toLowerCase()) {
@@ -951,13 +951,12 @@ parser = (function(){
 						var to = replaceMaps[i][2];
 						var match = findMatchIgnoringCase(tweet, from, subString);
 						while (match.index >= 0)  {						
-      																			
-							tweet = tweet.replace(match.value, copyCase(match.value, to));						
-							match = findMatchIgnoringCase(tweet, from);							
-						
 							if (tweetFits(tweet)) {
 								return tweet;
 							}
+      																			
+							tweet = tweet.replace(match.value, copyCase(match.value, to));						
+							match = findMatchIgnoringCase(tweet, from);													
 						}      
 					}	
       
