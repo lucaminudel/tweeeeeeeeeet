@@ -960,7 +960,7 @@ parser = (function(){
 							}
       																			
 							tweet = tweet.replace(match.value, copyCase(match.value, to));						
-							match = findMatchIgnoringCase(tweet, from);													
+							match = findMatchIgnoringCase(tweet, from, subString);													
 						}      
 					}	
       
