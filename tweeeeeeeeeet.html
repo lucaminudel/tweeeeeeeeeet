@@ -4,7 +4,7 @@
 	function shorten() {
 		
 		document.getElementById('errorMessage').textContent = '';
-		var program = "shortenTweet: '" + document.getElementById('yourTweet').value + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
+		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
 		var parseResult = '';
 		try{
 			 parseResult = parser.parse(program);
@@ -17,6 +17,9 @@
 		showResultLength();
 	}
 
+	function escapeQuotationMarkCharacters(text) {
+		return text.replace(/'/g, "''");
+	}
 	function showLength() {
 		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length;
 	}
