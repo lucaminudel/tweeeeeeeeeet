@@ -38,7 +38,15 @@
 	}
 
 	function showResultLength() {
-		document.getElementById('resultLength').textContent = tweetWithShortenedUrlsLength(document.getElementById('result').textContent);
+		var result = document.getElementById('result').textContent;
+		var resultWithSortenedLinksLength = tweetWithShortenedUrlsLength(result);
+		document.getElementById('resultLength').textContent = resultWithSortenedLinksLength;
+		
+		var resultLength = result.length;
+		document.getElementById('shortenedLink').textContent = '';
+		if (resultLength !== resultWithSortenedLinksLength) {
+			document.getElementById('shortenedLink').textContent = '(Links will be shortened)';		
+		}
 	}
 </script>
 <body>
@@ -54,7 +62,7 @@
 	<h1>Your tweet shortened</h1>
 	<textarea id='result' readonly=true rows=8 cols=80' style='{background-color:#d0e4fe;}'>Your tweet shortened here.</textarea>
 	<br />
-	<label>Lenght: </label><span id='resultLength' >0</span>
+	<label>Lenght: </label><span id='resultLength' >0</span> <span id='shortenedLink' ></span>
 	<br />
 	<br />
 
@@ -133,6 +141,10 @@
   substring: 'four' -> '4'
   substring: 'for' -> '4'
   substring: 'see' -> 'C'
+   substring: ' ,' -> ','
+  substring: ', ' -> ','
+  substring: ' .' -> '.'
+  substring: '. ' -> '.'
  )</textarea>
  </form>
 </body>
