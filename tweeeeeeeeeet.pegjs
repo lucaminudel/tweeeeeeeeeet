@@ -68,6 +68,11 @@
 						tweet = tweet.replace(urlRegExp, 'x');
 						length = tweet.length;
 						shortUrlsLength += 19;
+
+						if (match.indexOf('s') > 0) {
+							shortUrlsLength += 1;
+						}
+						
 					}
 					
 					return (length + shortUrlsLength);
