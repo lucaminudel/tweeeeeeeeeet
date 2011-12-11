@@ -1,5 +1,5 @@
 {
-      var shortener = function() {
+      var shortener = (function() {
      
 				var tweet = '';
 		
@@ -23,7 +23,7 @@
 						indexBegin = -1;
 					}
 					
-					if (subString === true && previousChar.match(/\s/) & successorChar.match(/\s/)) {
+					if (subString === true && previousChar.match(/\s/) && successorChar.match(/\s/)) {
 						indexBegin = -1;
 					}
 
@@ -58,21 +58,19 @@
 				}
 
 				function tweetWithShortenedUrlsLength(tweet) {
-					var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+					var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
 					var length = tweet.length;
 					var shortUrlsLength = 0;
 					
 					var match;
-					while (match = tweet.match(urlRegExp)) {
-					
+					for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {							
 						tweet = tweet.replace(urlRegExp, 'x');
 						length = tweet.length;
 						shortUrlsLength += 19;
 
 						if (match.indexOf('s') > 0) {
 							shortUrlsLength += 1;
-						}
-						
+						}						
 					}
 					
 					return (length + shortUrlsLength);
@@ -88,28 +86,29 @@
 
 					replaceUntilFit: function(replaceMaps) {
 
-					for(var i = 0; i < replaceMaps.length; ++i) {   
-						var subString = replaceMaps[i][0];
-						var from = replaceMaps[i][1];
-						var to = replaceMaps[i][2];
-						var match = findMatchIgnoringCase(tweet, from, subString);
-						while (match.index >= 0)  {						
+						var i;
+						for(i = 0; i < replaceMaps.length; ++i) {   
+							var subString = replaceMaps[i][0];
+							var from = replaceMaps[i][1];
+							var to = replaceMaps[i][2];
+							var match = findMatchIgnoringCase(tweet, from, subString);
+							while (match.index >= 0)  {						
 
-							if (tweetFits(tweet)) {
-								return tweet;
-							}
+								if (tweetFits(tweet)) {
+									return tweet;
+								}
 
-							tweet = tweet.replace(match.value, copyCase(match.value, to));						
-							match = findMatchIgnoringCase(tweet, from, subString);													
-						}      
-					}	
+								tweet = tweet.replace(match.value, copyCase(match.value, to));						
+								match = findMatchIgnoringCase(tweet, from, subString);													
+							}      
+						}	
+		  
+						return tweet;
+		  
+					}
       
-					return tweet;
-      
-                }
-      
-            }      
-      }();
+				};
+      }());
 }
 
  
