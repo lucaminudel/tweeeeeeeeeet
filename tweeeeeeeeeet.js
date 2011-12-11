@@ -865,36 +865,53 @@ parser = (function(){
      
 				var tweet = '';
 		
-				function findMatchIgnoringCase(source, searchString, subString) {
+				function findMatchIgnoringCase(startIndex, source, searchString, subString) {
 					var lowerSource = source.toLowerCase(source);
 					var lowerSearchString = searchString.toLowerCase(searchString);
-					var indexBegin = lowerSource.indexOf(lowerSearchString);
-					var indexEnd = indexBegin + searchString.length;
-					var match = source.substring(indexBegin, indexEnd);
-					
-					var previousChar = ' ';
-					if (indexBegin > 0) {
-						previousChar = source[indexBegin -1];
-					}
-					var successorChar = ' ';
-					if (indexEnd < source.length) {
-						successorChar = source[indexEnd];
-					}
-					
-					if (subString === false && (!previousChar.match(/\s/) || !successorChar.match(/\s/))) {
-						indexBegin = -1;
-					}
-					
-					if (subString === true && previousChar.match(/\s/) && successorChar.match(/\s/)) {
-						indexBegin = -1;
-					}
 
+					var indexBegin;
+					var indexEnd;
+					var match;
+					
+					do {
+						indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
+						indexEnd = indexBegin + searchString.length;
+						
+						var previousChar = ' ';
+						if (indexBegin > 0) {
+							previousChar = source[indexBegin -1];
+						}
+						var successorChar = ' ';
+						if (indexEnd < source.length) {
+							successorChar = source[indexEnd];
+						}
+						
+						if (subString === false && (!previousChar.match(/\s/) || !successorChar.match(/\s/))) {
+							indexEnd = 0;
+						}
+						
+						if (subString === true && previousChar.match(/\s/) && successorChar.match(/\s/)) {
+							indexEnd = 0;
+						}
+
+						match = source.substring(indexBegin, indexEnd);
+						startIndex = indexBegin +1;
+					} while (indexBegin >= 0 && indexEnd === 0);
+					
 					return {
 						index: indexBegin,
 						value: match
 					};
 				}
 				
+				function replaceMatch(startIndex, source, value, replaceValue) {
+					var head = source.substring(0, startIndex);
+					var tail = source.substring(startIndex);
+					tail = tail.replace(value, replaceValue);
+					
+					return head + tail;
+				}
+
 				function copyCase(from, to) {
 					if (to !== to.toLowerCase()) {
 						return to;
@@ -948,26 +965,31 @@ parser = (function(){
 
 					replaceUntilFit: function(replaceMaps) {
 
+						if (tweetFits(tweet)) {
+							return tweet;
+						}
+
 						var i;
 						for(i = 0; i < replaceMaps.length; ++i) {   
 							var subString = replaceMaps[i][0];
 							var from = replaceMaps[i][1];
 							var to = replaceMaps[i][2];
-							var match = findMatchIgnoringCase(tweet, from, subString);
-							while (match.index >= 0)  {						
+							var startIndex = 0;
+							var match = findMatchIgnoringCase(startIndex, tweet, from, subString);
+							while (match.index >= 0)  {
+								
+								tweet = replaceMatch(match.index, tweet, match.value, copyCase(match.value, to));
 								if (tweetFits(tweet)) {
 									return tweet;
 								}
-																					
-								tweet = tweet.replace(match.value, copyCase(match.value, to));						
-								match = findMatchIgnoringCase(tweet, from, subString);													
+								
+								startIndex = match.index + to.length;
+								match = findMatchIgnoringCase(startIndex, tweet, from, subString);													
 							}      
 						}	
 		  
-						return tweet;
-      
+						return tweet;		  
 					}
-      
 				};
       }());
       
