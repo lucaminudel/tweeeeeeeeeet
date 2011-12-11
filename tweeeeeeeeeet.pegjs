@@ -101,6 +101,8 @@
 				
 					shortenTweet: function(str) { tweet = str; },
 
+					replaceUntilFit: function(replaceMaps) {
+
 						if (tweetFits(tweet)) {
 							return tweet;
 						}
@@ -125,7 +127,7 @@
 						}	
 		  
 						return tweet;		  
-					}      
+					}
 				};
       }());
 }
