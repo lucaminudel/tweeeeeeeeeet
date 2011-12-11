@@ -886,11 +886,11 @@ parser = (function(){
 							successorChar = source[indexEnd];
 						}
 						
-						if (subString === false && (!previousChar.match(/\s/) || !successorChar.match(/\s/))) {
+						if (subString === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
 							indexEnd = 0;
 						}
 						
-						if (subString === true && previousChar.match(/\s/) && successorChar.match(/\s/)) {
+						if (subString === true && previousChar.match(/\W/) && successorChar.match(/\W/)) {
 							indexEnd = 0;
 						}
 
