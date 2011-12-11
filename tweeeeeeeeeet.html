@@ -1,37 +1,20 @@
 <html>
+<head>
 <script src='tweeeeeeeeeet.js'></script>
 <script type="text/javascript">
-	function shorten() {
-		
-		document.getElementById('errorMessage').textContent = '';
-		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
-		var parseResult = '';
-		try{
-			 parseResult = parser.parse(program);
-		}
-		catch(e) {
-			document.getElementById('errorMessage').textContent = e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message;
-		}
-		
-		document.getElementById('result').textContent = parseResult;
-		showResultLength();
-	}
+	"use strict";
 
 	function escapeQuotationMarkCharacters(text) {
 		return text.replace(/'/g, "''");
 	}
-	function showLength() {
-		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length;
-	}
 
 	function tweetWithShortenedUrlsLength(tweet) {
-		var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+		var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
 		var length = tweet.length;
 		var shortUrlsLength = 0;
 		
 		var match;
-		while (match = tweet.match(urlRegExp)) {
-		
+		for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {		
 			tweet = tweet.replace(urlRegExp, 'x');
 			length = tweet.length;
 			shortUrlsLength += 19;
@@ -55,33 +38,59 @@
 			document.getElementById('shortenedLink').textContent = '(Links will be shortened)';		
 		}
 	}
+
+	function shorten() {
+		
+		document.getElementById('errorMessage').textContent = '';
+		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
+		var parseResult = '';
+		try{
+			 parseResult = parser.parse(program);
+		}
+		catch(e) {
+			document.getElementById('errorMessage').textContent = e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message;
+		}
+		
+		document.getElementById('result').textContent = parseResult;
+		showResultLength();
+	}
+
+	function showLength() {
+		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length;
+	}
+
+	window.onload = function() {
+		document.getElementById('shortenBotton').onclick = shorten;
+		document.getElementById('yourTweet').onchange = showLength;
+	};	
 </script>
-<body>
 <title>tweeeeeeeeeet</title>
+</head>
+<body>
 <form>
 	<h1>Your tweeeeeeeeeet</h1>
-	<textarea id='yourTweet' rows=8 cols=80 onchange='showLength()'></textarea>
+	<textarea id='yourTweet' rows='8' cols='80'></textarea>
 	<br />
-	<button type='button' id='shortenBotton' onClick='shorten()'>Shorten your tweet</button>   <label>Lenght: </label><span id='yourTweetLength' >0</span>
+	<button type='button' id='shortenBotton'>Shorten your tweet</button>   <label>Lenght: </label><span id='yourTweetLength' >0</span>
 	<br />
 	<br />
 	
 	<h1>Your tweet shortened</h1>
-	<textarea id='result' readonly=true rows=8 cols=80' style='{background-color:#d0e4fe;}'>Your tweet shortened here.</textarea>
+	<textarea id='result' readonly=true rows='8' cols='80' style='background-color:#d0e4fe;'>Your tweet shortened here.</textarea>
 	<br />
 	<label>Lenght: </label><span id='resultLength' >0</span> <span id='shortenedLink' ></span>
 	<br />
 	<br />
 
 	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
-    <span id='errorMessage' style="color:red"></span>
+    <span id='errorMessage' style='color:red;'></span>
 	<br />
 	<br />
-	<textarea id='tweeeeeeeeeetProgram' rows=80 cols=60 >replaceUntilFit:
+	<textarea id='tweeeeeeeeeetProgram' rows='80' cols='60' >replaceUntilFit:
 (
   substring: '  ' -> ' '
   'with' -> 'w/'
-  'and' -> '&'
+  'and' -> '&amp;'
   'without' -> 'w/o'
   'before' -> 'b4'
   'because' -> 'b/c'
@@ -126,8 +135,8 @@
   'wait' -> 'w8'
   'waiting' -> 'w8N'
   'hate' -> '8'
-  'greater than' -> '>'
-  'less than' -> '<'
+  'greater than' -> '&gt;'
+  'less than' -> '&lt;'
   'thanks' -> '10X'
   'thank you' -> '10U'
   'threesome ' -> '3SUM'
