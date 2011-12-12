@@ -1,5 +1,8 @@
+var tweeeeeeeeeet = (tweeeeeeeeeet === null || typeof tweeeeeeeeeet === 'undefined') ? {} : tweeeeeeeeeet;
 
-function createTweetAbbreviationObject(tweet, originalString, abbreviation, isSubstring) {
+
+
+tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, abbreviation, isSubstring) {
 
 	var _tweet = tweet;
 	var _originalString = originalString;
@@ -91,8 +94,10 @@ function createTweetAbbreviationObject(tweet, originalString, abbreviation, isSu
 	};
 }
 
-function createTweetSizeObject(tweet, maxSize) {
-	
+
+
+tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
+		
 	var _tweet = tweet;
 	var _maxSize =  ( typeof(maxSize) !== 'undefined' ? maxSize : 0 );
 
@@ -125,7 +130,8 @@ function createTweetSizeObject(tweet, maxSize) {
 	};
 }
 
-function createTweeeeeeeeeetInstructionsInterpreterObject() {
+
+tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
 	var _tweet = '';
 		
 	return {
@@ -134,7 +140,7 @@ function createTweeeeeeeeeetInstructionsInterpreterObject() {
 
 		replaceUntilFit: function(replaceMaps, length) {
 			
-			var tweetSize = createTweetSizeObject(_tweet, length) ;
+			var tweetSize = tweeeeeeeeeet.createTweetSizeObject(_tweet, length) ;
 
 			if (tweetSize.fits()) {
 				return _tweet;
@@ -146,12 +152,12 @@ function createTweeeeeeeeeetInstructionsInterpreterObject() {
 				var replaceFrom = replaceMaps[i][1];
 				var replaceTo = replaceMaps[i][2];
 
-				var tweetAbbreviationObject = createTweetAbbreviationObject(_tweet, replaceFrom, replaceTo, isSubStringReplace);
+				var tweetAbbreviationObject = tweeeeeeeeeet.createTweetAbbreviationObject(_tweet, replaceFrom, replaceTo, isSubStringReplace);
 				while (tweetAbbreviationObject.findNextMatch())  {
 					
 					_tweet = tweetAbbreviationObject.replaceMatch();
 					
-					tweetSize = createTweetSizeObject(_tweet, length) ;
+					tweetSize = tweeeeeeeeeet.createTweetSizeObject(_tweet, length) ;
 					if (tweetSize.fits()) {
 						return _tweet;
 					}
@@ -164,4 +170,6 @@ function createTweeeeeeeeeetInstructionsInterpreterObject() {
 	};
 }
 
-var shortener = createTweeeeeeeeeetInstructionsInterpreterObject();
+
+tweeeeeeeeeet.shortener = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+
