@@ -94,7 +94,8 @@ function createTweetAbbreviationObject(tweet, originalString, abbreviation, isSu
 function createTweetSizeObject(tweet, maxSize) {
 	
 	var _tweet = tweet;
-	var _maxSize = maxSize;
+	var _maxSize =  ( typeof(maxSize) != 'undefined' ? maxSize : 0 );
+
 	
 	return {		
 		lengthWithShortenedUrls: function() {
