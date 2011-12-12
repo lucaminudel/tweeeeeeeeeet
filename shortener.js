@@ -1,61 +1,19 @@
-'use strict'
 
-var shortener = (function() {
+function createTweetAbbreviationObject(tweet, originalString, abbreviation, isSubstring) {
 
-	var tweet = '';
-
-	function findMatchIgnoringCase(startIndex, source, searchString, subString) {
-		var lowerSource = source.toLowerCase(source);
-		var lowerSearchString = searchString.toLowerCase(searchString);
-
-		var indexBegin;
-		var indexEnd;
-		var match;
-		
-		do {
-			indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
-			indexEnd = indexBegin + searchString.length;
-			
-			var previousChar = ' ';
-			if (indexBegin > 0) {
-				previousChar = source[indexBegin -1];
-			}
-			var successorChar = ' ';
-			if (indexEnd < source.length) {
-				successorChar = source[indexEnd];
-			}
-			
-			if (subString === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
-				indexEnd = 0;
-			}
-			
-			if (subString === true && previousChar.match(/\W/) && successorChar.match(/\W/)) {
-				indexEnd = 0;
-			}
-
-			match = source.substring(indexBegin, indexEnd);
-			startIndex = indexBegin +1;
-		} while (indexBegin >= 0 && indexEnd === 0);
-		
-		return {
-			index: indexBegin,
-			value: match
-		};
-	}
+	var _tweet = tweet;
+	var _originalString = originalString;
+	var _abbreviation = abbreviation;
+	var _isSubstring = isSubstring;
 	
-	function replaceMatch(startIndex, source, value, replaceValue) {
-		var head = source.substring(0, startIndex);
-		var tail = source.substring(startIndex);
-		tail = tail.replace(value, replaceValue);
-		
-		return head + tail;
-	}
-	
-	function capitalize(source) {
+	var _startIndex = 0;
+	var _match = null;
+
+	function _capitalize(source) {
 		return source.charAt(0).toUpperCase() + source.slice(1);
 	}
 	
-	function copyCase(from, to) {
+	function _copyCase(from, to) {
 		if (to !== to.toLowerCase()) {
 			return to;
 		}
@@ -68,62 +26,136 @@ var shortener = (function() {
 			return to.toUpperCase();
 		}
 		
-		if (from === capitalize(from)) {
-			return capitalize(to);
+		if (from === _capitalize(from)) {
+			return _capitalize(to);
 		}
 		
 		return to;
 	}
 	
-	function tweetWithShortenedUrlsLength(tweet) {
-		var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
-		var length = tweet.length;
-		var shortUrlsLength = 0;
-		
-		var match;
-		for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {							
-			tweet = tweet.replace(urlRegExp, 'x');
-			length = tweet.length;
-			shortUrlsLength += 19;
+	return {
+		findNextMatch: function() {
+			var startIndex = _startIndex;			
+			var lowerSource = _tweet.toLowerCase();
+			var lowerSearchString = _originalString.toLowerCase();
 
-			if (match.indexOf('s') > 0) {
-				shortUrlsLength += 1;
-			}						
+			var indexBegin;
+			var indexEnd;
+			var match;
+			
+			do {
+				indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
+				indexEnd = indexBegin + _originalString.length;
+				
+				var previousChar = ' ';
+				if (indexBegin > 0) {
+					previousChar = _tweet[indexBegin -1];
+				}
+				
+				var successorChar = ' ';
+				if (indexEnd < _tweet.length) {
+					successorChar = _tweet[indexEnd];
+				}
+				
+				if (_isSubstring === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
+					indexEnd = 0;
+				}
+				
+				if (_isSubstring === true && previousChar.match(/\W/) && successorChar.match(/\W/)) {
+					indexEnd = 0;
+				}
+
+				match = _tweet.substring(indexBegin, indexEnd);
+				startIndex = indexBegin +1;
+			} while (indexBegin >= 0 && indexEnd === 0);
+			
+			_match = {
+				index: indexBegin,
+				value: match
+			};
+			
+			var found = (indexBegin >= 0);
+			return found;
+		},
+		
+		replaceMatch: function() {
+			var head = _tweet.substring(0, _match.index);
+			var tail = _tweet.substring(_match.index);
+			tail = tail.replace(_match.value, _copyCase(_match.value, _abbreviation));
+			
+			_tweet = head + tail;
+			_startIndex = _match.index + _abbreviation.length;
+			
+			return _tweet;
 		}
-		
-		return (length + shortUrlsLength);
-	}
+	};
+}
 
-	function tweetFits(tweet, length) {					
-		return tweetWithShortenedUrlsLength(tweet) <= length;
-	}
+function createTweetSizeObject(tweet, maxSize) {
 	
+	var _tweet = tweet;
+	var _maxSize = maxSize;
+	
+	return {		
+		lengthWithShortenedUrls: function() {
+			var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+			var length = _tweet.length;
+			var shortUrlsLength = 0;
+			var tweet = _tweet;
+			
+			var match;
+			for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {							
+				tweet = tweet.replace(urlRegExp, 'x');
+				length = tweet.length;
+				shortUrlsLength += 19;
+
+				if (match.indexOf('s') > 0) {
+					shortUrlsLength += 1;
+				}						
+			}
+			
+			return (length + shortUrlsLength);
+		},
+		
+		fits: function() {					
+			return this.lengthWithShortenedUrls() <= _maxSize;
+		}		
+		
+	};
+}
+
+var shortener = (function() {
+
+	var tweet = '';
+		
 	return {
 	
 		shortenTweet: function(str) { tweet = str; },
 
 		replaceUntilFit: function(replaceMaps, length) {
+			
+			var tweetSize = createTweetSizeObject(tweet, length) ;
 
-			if (tweetFits(tweet, length)) {
+			if (tweetSize.fits()) {
 				return tweet;
 			}
 
 			var i;
 			for(i = 0; i < replaceMaps.length; ++i) {   
-				var subString = replaceMaps[i][0];
-				var from = replaceMaps[i][1];
-				var to = replaceMaps[i][2];
-				var startIndex = 0;
-				var match = findMatchIgnoringCase(startIndex, tweet, from, subString);
-				while (match.index >= 0)  {
+				var isSubStringReplace = replaceMaps[i][0];
+				var replaceFrom = replaceMaps[i][1];
+				var replaceTo = replaceMaps[i][2];
+
+				var tweetAbbreviationObject = createTweetAbbreviationObject(tweet, replaceFrom, replaceTo, isSubStringReplace);
+				while (tweetAbbreviationObject.findNextMatch())  {
 					
-					tweet = replaceMatch(match.index, tweet, match.value, copyCase(match.value, to));
-					if (tweetFits(tweet, length)) {
+					tweet = tweetAbbreviationObject.replaceMatch();
+					
+					tweetSize = createTweetSizeObject(tweet, length) ;
+					if (tweetSize.fits()) {
 						return tweet;
 					}
 					
-					startIndex = match.index + to.length;
-					match = findMatchIgnoringCase(startIndex, tweet, from, subString);													
 				}      
 			}	
 
@@ -131,4 +163,3 @@ var shortener = (function() {
 		}
 	};
 }());
-
