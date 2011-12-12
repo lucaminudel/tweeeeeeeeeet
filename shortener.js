@@ -140,28 +140,21 @@ tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
 
 		replaceUntilFit: function(replaceMaps, length) {
 			
-			var tweetSize = tweeeeeeeeeet.createTweetSizeObject(_tweet, length) ;
-
-			if (tweetSize.fits()) {
-				return _tweet;
-			}
-
 			var i;
 			for(i = 0; i < replaceMaps.length; ++i) {   
+
+				var tweetSize = tweeeeeeeeeet.createTweetSizeObject(_tweet, length) ;
+				if (tweetSize.fits()) {
+					return _tweet;
+				}
+				
 				var isSubStringReplace = replaceMaps[i][0];
 				var replaceFrom = replaceMaps[i][1];
 				var replaceTo = replaceMaps[i][2];
 
 				var tweetAbbreviationObject = tweeeeeeeeeet.createTweetAbbreviationObject(_tweet, replaceFrom, replaceTo, isSubStringReplace);
-				while (tweetAbbreviationObject.findNextMatch())  {
-					
-					_tweet = tweetAbbreviationObject.replaceMatch();
-					
-					tweetSize = tweeeeeeeeeet.createTweetSizeObject(_tweet, length) ;
-					if (tweetSize.fits()) {
-						return _tweet;
-					}
-					
+				while (tweetAbbreviationObject.findNextMatch())  {					
+					_tweet = tweetAbbreviationObject.replaceMatch();										
 				}      
 			}	
 
