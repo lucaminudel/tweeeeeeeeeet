@@ -94,7 +94,7 @@ function createTweetAbbreviationObject(tweet, originalString, abbreviation, isSu
 function createTweetSizeObject(tweet, maxSize) {
 	
 	var _tweet = tweet;
-	var _maxSize =  ( typeof(maxSize) != 'undefined' ? maxSize : 0 );
+	var _maxSize =  ( typeof(maxSize) !== 'undefined' ? maxSize : 0 );
 
 	
 	return {		
@@ -125,20 +125,19 @@ function createTweetSizeObject(tweet, maxSize) {
 	};
 }
 
-var shortener = (function() {
-
-	var tweet = '';
+function createTweeeeeeeeeetInstructionsInterpreterObject() {
+	var _tweet = '';
 		
 	return {
 	
-		shortenTweet: function(str) { tweet = str; },
+		shortenTweet: function(str) { _tweet = str; },
 
 		replaceUntilFit: function(replaceMaps, length) {
 			
-			var tweetSize = createTweetSizeObject(tweet, length) ;
+			var tweetSize = createTweetSizeObject(_tweet, length) ;
 
 			if (tweetSize.fits()) {
-				return tweet;
+				return _tweet;
 			}
 
 			var i;
@@ -147,20 +146,22 @@ var shortener = (function() {
 				var replaceFrom = replaceMaps[i][1];
 				var replaceTo = replaceMaps[i][2];
 
-				var tweetAbbreviationObject = createTweetAbbreviationObject(tweet, replaceFrom, replaceTo, isSubStringReplace);
+				var tweetAbbreviationObject = createTweetAbbreviationObject(_tweet, replaceFrom, replaceTo, isSubStringReplace);
 				while (tweetAbbreviationObject.findNextMatch())  {
 					
-					tweet = tweetAbbreviationObject.replaceMatch();
+					_tweet = tweetAbbreviationObject.replaceMatch();
 					
-					tweetSize = createTweetSizeObject(tweet, length) ;
+					tweetSize = createTweetSizeObject(_tweet, length) ;
 					if (tweetSize.fits()) {
-						return tweet;
+						return _tweet;
 					}
 					
 				}      
 			}	
 
-			return tweet;		  
+			return _tweet;		  
 		}
 	};
-}());
+}
+
+var shortener = createTweeeeeeeeeetInstructionsInterpreterObject();
