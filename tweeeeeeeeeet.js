@@ -10,6 +10,7 @@ parser = (function(){
      */
     parse: function(input, startRule) {
       var parseFunctions = {
+        "integer": parse_integer,
         "replaceArray": parse_replaceArray,
         "replaceMap": parse_replaceMap,
         "replaceUntilFitKeyword": parse_replaceUntilFitKeyword,
@@ -19,6 +20,7 @@ parser = (function(){
         "start": parse_start,
         "string": parse_string,
         "substringKeyword": parse_substringKeyword,
+        "withAbbreviationsKeyword": parse_withAbbreviationsKeyword,
         "ws": parse_ws
       };
       
@@ -206,9 +208,33 @@ parser = (function(){
           if (result4 !== null) {
             var result5 = parse_ws();
             if (result5 !== null) {
-              var result6 = parse_replaceArray();
+              var result6 = parse_integer();
               if (result6 !== null) {
-                var result1 = [result3, result4, result5, result6];
+                var result7 = parse_ws();
+                if (result7 !== null) {
+                  var result8 = parse_withAbbreviationsKeyword();
+                  if (result8 !== null) {
+                    var result9 = parse_ws();
+                    if (result9 !== null) {
+                      var result10 = parse_replaceArray();
+                      if (result10 !== null) {
+                        var result1 = [result3, result4, result5, result6, result7, result8, result9, result10];
+                      } else {
+                        var result1 = null;
+                        pos = savedPos1;
+                      }
+                    } else {
+                      var result1 = null;
+                      pos = savedPos1;
+                    }
+                  } else {
+                    var result1 = null;
+                    pos = savedPos1;
+                  }
+                } else {
+                  var result1 = null;
+                  pos = savedPos1;
+                }
               } else {
                 var result1 = null;
                 pos = savedPos1;
@@ -226,7 +252,7 @@ parser = (function(){
           pos = savedPos1;
         }
         var result2 = result1 !== null
-          ? (function(key, arg) { return shortener.replaceUntilFit(arg); })(result1[1], result1[3])
+          ? (function(key, length, arg) { return shortener.replaceUntilFit(arg, length); })(result1[1], result1[3], result1[7])
           : null;
         if (result2 !== null) {
           var result0 = result2;
@@ -252,7 +278,8 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
         if (input.substr(pos, 12) === "shortenTweet") {
@@ -293,8 +320,10 @@ parser = (function(){
           var result0 = null;
           pos = savedPos0;
         }
-        
-        
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("shortenTweet:");
+        }
         
         cache[cacheKey] = {
           nextPos: pos,
@@ -311,16 +340,78 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
-        if (input.substr(pos, 15) === "replaceUntilFit") {
-          var result3 = "replaceUntilFit";
-          pos += 15;
+        if (input.substr(pos, 17) === "replaceUntilFitTo") {
+          var result3 = "replaceUntilFitTo";
+          pos += 17;
         } else {
           var result3 = null;
           if (reportMatchFailures) {
-            matchFailed("\"replaceUntilFit\"");
+            matchFailed("\"replaceUntilFitTo\"");
+          }
+        }
+        if (result3 !== null) {
+          if (input.substr(pos).match(/^[:]/) !== null) {
+            var result4 = input.charAt(pos);
+            pos++;
+          } else {
+            var result4 = null;
+            if (reportMatchFailures) {
+              matchFailed("[:]");
+            }
+          }
+          if (result4 !== null) {
+            var result1 = [result3, result4];
+          } else {
+            var result1 = null;
+            pos = savedPos1;
+          }
+        } else {
+          var result1 = null;
+          pos = savedPos1;
+        }
+        var result2 = result1 !== null
+          ? (function(first, last) { return first + last })(result1[0], result1[1])
+          : null;
+        if (result2 !== null) {
+          var result0 = result2;
+        } else {
+          var result0 = null;
+          pos = savedPos0;
+        }
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("replaceUntilFitTo:");
+        }
+        
+        cache[cacheKey] = {
+          nextPos: pos,
+          result:  result0
+        };
+        return result0;
+      }
+      
+      function parse_withAbbreviationsKeyword() {
+        var cacheKey = 'withAbbreviationsKeyword@' + pos;
+        var cachedResult = cache[cacheKey];
+        if (cachedResult) {
+          pos = cachedResult.nextPos;
+          return cachedResult.result;
+        }
+        
+        
+        var savedPos0 = pos;
+        var savedPos1 = pos;
+        if (input.substr(pos, 17) === "withAbbreviations") {
+          var result3 = "withAbbreviations";
+          pos += 17;
+        } else {
+          var result3 = null;
+          if (reportMatchFailures) {
+            matchFailed("\"withAbbreviations\"");
           }
         }
         if (result3 !== null) {
@@ -370,7 +461,8 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
         if (input.substr(pos, 9) === "substring") {
@@ -411,8 +503,10 @@ parser = (function(){
           var result0 = null;
           pos = savedPos0;
         }
-        
-        
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("substring:");
+        }
         
         cache[cacheKey] = {
           nextPos: pos,
@@ -521,7 +615,8 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
         var result3 = parse_ws();
@@ -591,8 +686,10 @@ parser = (function(){
           var result0 = null;
           pos = savedPos0;
         }
-        
-        
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("replace map: 'from' -> 'to'");
+        }
         
         cache[cacheKey] = {
           nextPos: pos,
@@ -609,7 +706,8 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
         if (input.substr(pos).match(/^[']/) !== null) {
@@ -733,8 +831,68 @@ parser = (function(){
           var result0 = null;
           pos = savedPos0;
         }
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("string");
+        }
         
+        cache[cacheKey] = {
+          nextPos: pos,
+          result:  result0
+        };
+        return result0;
+      }
+      
+      function parse_integer() {
+        var cacheKey = 'integer@' + pos;
+        var cachedResult = cache[cacheKey];
+        if (cachedResult) {
+          pos = cachedResult.nextPos;
+          return cachedResult.result;
+        }
         
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
+        var savedPos0 = pos;
+        if (input.substr(pos).match(/^[0-9]/) !== null) {
+          var result3 = input.charAt(pos);
+          pos++;
+        } else {
+          var result3 = null;
+          if (reportMatchFailures) {
+            matchFailed("[0-9]");
+          }
+        }
+        if (result3 !== null) {
+          var result1 = [];
+          while (result3 !== null) {
+            result1.push(result3);
+            if (input.substr(pos).match(/^[0-9]/) !== null) {
+              var result3 = input.charAt(pos);
+              pos++;
+            } else {
+              var result3 = null;
+              if (reportMatchFailures) {
+                matchFailed("[0-9]");
+              }
+            }
+          }
+        } else {
+          var result1 = null;
+        }
+        var result2 = result1 !== null
+          ? (function(digits) { return parseInt(digits.join(""), 10); })(result1)
+          : null;
+        if (result2 !== null) {
+          var result0 = result2;
+        } else {
+          var result0 = null;
+          pos = savedPos0;
+        }
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("integer");
+        }
         
         cache[cacheKey] = {
           nextPos: pos,
@@ -751,7 +909,8 @@ parser = (function(){
           return cachedResult.result;
         }
         
-        
+        var savedReportMatchFailures = reportMatchFailures;
+        reportMatchFailures = false;
         var savedPos0 = pos;
         var result1 = [];
         if (input.substr(pos).match(/^[ 	\xA0\uFEFF\n\r\u2028\u2029]/) !== null) {
@@ -784,8 +943,10 @@ parser = (function(){
           var result0 = null;
           pos = savedPos0;
         }
-        
-        
+        reportMatchFailures = savedReportMatchFailures;
+        if (reportMatchFailures && result0 === null) {
+          matchFailed("space");
+        }
         
         cache[cacheKey] = {
           nextPos: pos,
@@ -858,143 +1019,272 @@ parser = (function(){
         
         return { line: line, column: column };
       }
-   
       
-
-      var shortener = (function() {
-     
-				var tweet = '';
-		
-				function findMatchIgnoringCase(startIndex, source, searchString, subString) {
-					var lowerSource = source.toLowerCase(source);
-					var lowerSearchString = searchString.toLowerCase(searchString);
-
-					var indexBegin;
-					var indexEnd;
-					var match;
-					
-					do {
-						indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
-						indexEnd = indexBegin + searchString.length;
-						
-						var previousChar = ' ';
-						if (indexBegin > 0) {
-							previousChar = source[indexBegin -1];
-						}
-						var successorChar = ' ';
-						if (indexEnd < source.length) {
-							successorChar = source[indexEnd];
-						}
-						
-						if (subString === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
-							indexEnd = 0;
-						}
-						
-						if (subString === true && previousChar.match(/\W/) && successorChar.match(/\W/)) {
-							indexEnd = 0;
-						}
-
-						match = source.substring(indexBegin, indexEnd);
-						startIndex = indexBegin +1;
-					} while (indexBegin >= 0 && indexEnd === 0);
-					
-					return {
-						index: indexBegin,
-						value: match
-					};
-				}
-				
-				function replaceMatch(startIndex, source, value, replaceValue) {
-					var head = source.substring(0, startIndex);
-					var tail = source.substring(startIndex);
-					tail = tail.replace(value, replaceValue);
-					
-					return head + tail;
-				}
-
-				function copyCase(from, to) {
-					if (to !== to.toLowerCase()) {
-						return to;
-					}
-
-					if (from === from.toLowerCase()) {
-						return to.toLowerCase();
-					}
-					
-					if (from === from.toUpperCase()) {
-						return to.toUpperCase();
-					}
-					
-					if (from === capitalize(from)) {
-						return capitalize(to);
-					}
-					
-					return to;
-				}
-				
-				function capitalize(source) {
-					return source.charAt(0).toUpperCase() + source.slice(1);
-				}
-
-				function tweetWithShortenedUrlsLength(tweet) {
-					var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
-					var length = tweet.length;
-					var shortUrlsLength = 0;
-					
-					var match;
-					for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {							
-						tweet = tweet.replace(urlRegExp, 'x');
-						length = tweet.length;
-						shortUrlsLength += 19;
-						
-						if (match.indexOf('s') > 0) {
-							shortUrlsLength += 1;
-						}
-					}
-					
-					return (length + shortUrlsLength);
-				}
-
-				function tweetFits(tweet) {					
-					return tweetWithShortenedUrlsLength(tweet) <= 140;
-				}
-				
-				return {
-				
-					shortenTweet: function(str) { tweet = str; },
-
-					replaceUntilFit: function(replaceMaps) {
-
-						if (tweetFits(tweet)) {
-							return tweet;
-						}
-
-						var i;
-						for(i = 0; i < replaceMaps.length; ++i) {   
-							var subString = replaceMaps[i][0];
-							var from = replaceMaps[i][1];
-							var to = replaceMaps[i][2];
-							var startIndex = 0;
-							var match = findMatchIgnoringCase(startIndex, tweet, from, subString);
-							while (match.index >= 0)  {
-								
-								tweet = replaceMatch(match.index, tweet, match.value, copyCase(match.value, to));
-								if (tweetFits(tweet)) {
-									return tweet;
-								}
-								
-								startIndex = match.index + to.length;
-								match = findMatchIgnoringCase(startIndex, tweet, from, subString);													
-							}      
-						}	
-		  
-						return tweet;		  
-					}
-				};
-      }());
       
-
-   
+      
+            var shortener = (function() {
+      
+           
+      
+      				var tweet = '';
+      
+      		
+      
+      				function findMatchIgnoringCase(startIndex, source, searchString, subString) {
+      
+      					var lowerSource = source.toLowerCase(source);
+      
+      					var lowerSearchString = searchString.toLowerCase(searchString);
+      
+      
+      
+      					var indexBegin;
+      
+      					var indexEnd;
+      
+      					var match;
+      
+      					
+      
+      					do {
+      
+      						indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
+      
+      						indexEnd = indexBegin + searchString.length;
+      
+      						
+      
+      						var previousChar = ' ';
+      
+      						if (indexBegin > 0) {
+      
+      							previousChar = source[indexBegin -1];
+      
+      						}
+      
+      						var successorChar = ' ';
+      
+      						if (indexEnd < source.length) {
+      
+      							successorChar = source[indexEnd];
+      
+      						}
+      
+      						
+      
+      						if (subString === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
+      
+      							indexEnd = 0;
+      
+      						}
+      
+      						
+      
+      						if (subString === true && previousChar.match(/\W/) && successorChar.match(/\W/)) {
+      
+      							indexEnd = 0;
+      
+      						}
+      
+      
+      
+      						match = source.substring(indexBegin, indexEnd);
+      
+      						startIndex = indexBegin +1;
+      
+      					} while (indexBegin >= 0 && indexEnd === 0);
+      
+      					
+      
+      					return {
+      
+      						index: indexBegin,
+      
+      						value: match
+      
+      					};
+      
+      				}
+      
+      				
+      
+      				function replaceMatch(startIndex, source, value, replaceValue) {
+      
+      					var head = source.substring(0, startIndex);
+      
+      					var tail = source.substring(startIndex);
+      
+      					tail = tail.replace(value, replaceValue);
+      
+      					
+      
+      					return head + tail;
+      
+      				}
+      
+      				
+      
+      				function copyCase(from, to) {
+      
+      					if (to !== to.toLowerCase()) {
+      
+      						return to;
+      
+      					}
+      
+      
+      
+      					if (from === from.toLowerCase()) {
+      
+      						return to.toLowerCase();
+      
+      					}
+      
+      					
+      
+      					if (from === from.toUpperCase()) {
+      
+      						return to.toUpperCase();
+      
+      					}
+      
+      					
+      
+      					if (from === capitalize(from)) {
+      
+      						return capitalize(to);
+      
+      					}
+      
+      					
+      
+      					return to;
+      
+      				}
+      
+      				
+      
+      				function capitalize(source) {
+      
+      					return source.charAt(0).toUpperCase() + source.slice(1);
+      
+      				}
+      
+      
+      
+      				function tweetWithShortenedUrlsLength(tweet) {
+      
+      					var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+      
+      					var length = tweet.length;
+      
+      					var shortUrlsLength = 0;
+      
+      					
+      
+      					var match;
+      
+      					for (match = tweet.match(urlRegExp); match; match = tweet.match(urlRegExp)) {							
+      
+      						tweet = tweet.replace(urlRegExp, 'x');
+      
+      						length = tweet.length;
+      
+      						shortUrlsLength += 19;
+      
+      
+      
+      						if (match.indexOf('s') > 0) {
+      
+      							shortUrlsLength += 1;
+      
+      						}						
+      
+      					}
+      
+      					
+      
+      					return (length + shortUrlsLength);
+      
+      				}
+      
+      
+      
+      				function tweetFits(tweet, length) {					
+      
+      					return tweetWithShortenedUrlsLength(tweet) <= length;
+      
+      				}
+      
+      				
+      
+      				return {
+      
+      				
+      
+      					shortenTweet: function(str) { tweet = str; },
+      
+      
+      
+      					replaceUntilFit: function(replaceMaps, length) {
+      
+      
+      
+      						if (tweetFits(tweet, length)) {
+      
+      							return tweet;
+      
+      						}
+      
+      
+      
+      						var i;
+      
+      						for(i = 0; i < replaceMaps.length; ++i) {   
+      
+      							var subString = replaceMaps[i][0];
+      
+      							var from = replaceMaps[i][1];
+      
+      							var to = replaceMaps[i][2];
+      
+      							var startIndex = 0;
+      
+      							var match = findMatchIgnoringCase(startIndex, tweet, from, subString);
+      
+      							while (match.index >= 0)  {
+      
+      								
+      
+      								tweet = replaceMatch(match.index, tweet, match.value, copyCase(match.value, to));
+      
+      								if (tweetFits(tweet, length)) {
+      
+      									return tweet;
+      
+      								}
+      
+      								
+      
+      								startIndex = match.index + to.length;
+      
+      								match = findMatchIgnoringCase(startIndex, tweet, from, subString);													
+      
+      							}      
+      
+      						}	
+      
+      		  
+      
+      						return tweet;		  
+      
+      					}
+      
+      				};
+      
+            }());
+      
+      
       
       var result = parseFunctions[startRule]();
       

@@ -69,14 +69,14 @@
 <body>
 <form>
 	<h1>Your tweeeeeeeeeet</h1>
-	<textarea id='yourTweet' rows='8' cols='80'></textarea>
+	<textarea id='yourTweet' rows='4' cols='80'></textarea>
 	<br />
 	<button type='button' id='shortenBotton'>Shorten your tweet</button>   <label>Lenght: </label><span id='yourTweetLength' >0</span>
 	<br />
 	<br />
 	
 	<h1>Your tweet shortened</h1>
-	<textarea id='result' readonly=true rows='8' cols='80' style='background-color:#d0e4fe;'>Your tweet shortened here.</textarea>
+	<textarea id='result' readonly=true rows='4' cols='80' style='background-color:#d0e4fe;'>Your tweet shortened here.</textarea>
 	<br />
 	<label>Lenght: </label><span id='resultLength' >0</span> <span id='shortenedLink' ></span>
 	<br />
@@ -86,7 +86,8 @@
     <span id='errorMessage' style='color:red;'></span>
 	<br />
 	<br />
-	<textarea id='tweeeeeeeeeetProgram' rows='80' cols='60' >replaceUntilFit:
+	<textarea id='tweeeeeeeeeetProgram' rows='80' cols='60' >replaceUntilFitTo: 140
+withAbbreviations:
 (
   substring: '  ' -> ' '
   'with' -> 'w/'

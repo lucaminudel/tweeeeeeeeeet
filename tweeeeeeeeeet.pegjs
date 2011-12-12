@@ -93,17 +93,17 @@
 					return (length + shortUrlsLength);
 				}
 
-				function tweetFits(tweet) {					
-					return tweetWithShortenedUrlsLength(tweet) <= 140;
+				function tweetFits(tweet, length) {					
+					return tweetWithShortenedUrlsLength(tweet) <= length;
 				}
 				
 				return {
 				
 					shortenTweet: function(str) { tweet = str; },
 
-					replaceUntilFit: function(replaceMaps) {
+					replaceUntilFit: function(replaceMaps, length) {
 
-						if (tweetFits(tweet)) {
+						if (tweetFits(tweet, length)) {
 							return tweet;
 						}
 
@@ -117,7 +117,7 @@
 							while (match.index >= 0)  {
 								
 								tweet = replaceMatch(match.index, tweet, match.value, copyCase(match.value, to));
-								if (tweetFits(tweet)) {
+								if (tweetFits(tweet, length)) {
 									return tweet;
 								}
 								
@@ -141,27 +141,33 @@ shortenTweetMethod = ws key:shortenTweetKeyword
                      ws arg:string
                      { shortener.shortenTweet(arg); }
 
-replaceUntilFitMethod = ws key:replaceUntilFitKeyword
-                        ws arg: replaceArray
-                        { return shortener.replaceUntilFit(arg); }
+replaceUntilFitMethod = ws replaceUntilFitKeyword
+                        ws length:integer
+                        ws withAbbreviationsKeyword
+                        ws arg:replaceArray
+                        { return shortener.replaceUntilFit(arg, length); }
 
-shortenTweetKeyword = first:"shortenTweet" last:[:] { return first + last }
+shortenTweetKeyword "shortenTweet:" = first:"shortenTweet" last:[:] { return first + last }
 
-replaceUntilFitKeyword = first:"replaceUntilFit" last:[:] { return first + last }
+replaceUntilFitKeyword "replaceUntilFitTo:" = first:"replaceUntilFitTo" last:[:] { return first + last }
 
-substringKeyword = first:"substring" last:[:] { return first + last }
+withAbbreviationsKeyword = first:"withAbbreviations" last:[:] { return first + last }
+
+substringKeyword "substring:" = first:"substring" last:[:] { return first + last }
 
 replaceArray = ws "(" ws replaceArray:replaceMap+ ws ")" { return replaceArray }
 
-replaceMap = ws sub:substringKeyword?
+replaceMap "replace map: 'from' -> 'to'" = ws sub:substringKeyword?
              ws from:string
              ws "->"
              ws to:string
              { return [sub !== "", from, to] }
 
-string = ['] val:(("''" {return "'"} / [^'])*) ['] { return val.join('') }
+string "string" = ['] val:(("''" {return "'"} / [^'])*) ['] { return val.join('') }
 
-ws = [ \t\v\f\u00A0\uFEFF\n\r\u2028\u2029]* { return '' }
+integer "integer" = digits:[0-9]+ { return parseInt(digits.join(""), 10); }
+
+ws  "space" = [ \t\v\f\u00A0\uFEFF\n\r\u2028\u2029]* { return '' }
 
 /*
 keyword = first:identifier last:[:] { return first + last }
