@@ -3,10 +3,6 @@ var tweeeeeeeeeet = (tweeeeeeeeeet === null || typeof tweeeeeeeeeet === 'undefin
 
 
 tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, abbreviation, isSubstring) {
-
-	if (originalString === null || typeof originalString === 'undefined' || originalString === '') {
-		throw new RangeError("originalString must be a non empty string.")
-	}
 	
 	var _tweet = tweet;
 	var _originalString = originalString;
@@ -50,6 +46,10 @@ tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, a
 			var indexEnd;
 			var match;
 			
+			if (_originalString === null || typeof _originalString === 'undefined' || _originalString === '') {
+				return false;
+			}
+
 			do {
 				indexBegin = lowerSource.indexOf(lowerSearchString, startIndex);
 				indexEnd = indexBegin + _originalString.length;
