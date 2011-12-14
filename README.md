@@ -14,5 +14,5 @@
 
 ### implementation details
 - PEG.js http://pegjs.majda.cz/ is used to create the parser of the Tweeeeeeeeeet instructions
-- this is still a pre-pre-pre-alfa version, now you know
+- this is still a alfa version, now you know
 - todo: add unit tests and JSLint, button to save chages to the Tweeeeeeeeeet instructions locally with one click.
