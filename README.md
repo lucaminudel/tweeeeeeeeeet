@@ -14,5 +14,9 @@
 
 ### implementation details
 - PEG.js http://pegjs.majda.cz/ is used to create the parser of the Tweeeeeeeeeet instructions
-- this is still a alfa version, now you know
-- todo: add unit tests and JSLint, button to save chages to the Tweeeeeeeeeet instructions locally with one click.
+- this is still a beta version, now you know
+- todo: add automatic JSLint check script, add integration tests between parser and the interpreter, add a button to save chages to the Tweeeeeeeeeet instructions locally with one click.
+
+### libraries used, thanks to
+- http://pivotal.github.com/jasmine/ for the tests in the spec folder
+- https://github.com/mojombo/clippy/ for the copy to clipboard flash library
