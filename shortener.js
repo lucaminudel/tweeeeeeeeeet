@@ -96,7 +96,7 @@ tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, a
 			return _tweet;
 		}
 	};
-}
+};
 
 
 
@@ -132,7 +132,7 @@ tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 		}		
 		
 	};
-}
+};
 
 
 tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
@@ -165,7 +165,7 @@ tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
 			return _tweet;		  
 		}
 	};
-}
+};
 
 
 tweeeeeeeeeet.shortener = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
