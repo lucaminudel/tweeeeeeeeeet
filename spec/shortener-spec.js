@@ -1,4 +1,8 @@
 describe("Tweet Shortener", function() {
+
+	it("Run-time environment info", function() {
+		jasmine.log(navigator.userAgent); 
+	});
 	
 	describe("TweetAbbreviation", function() {
 	
