@@ -291,6 +291,59 @@ describe("Tweet Shortener", function() {
 						
 			expect(shortenedTweet).toEqual(tweetThatFits);
 		});					
+		
+		it("when the shortened string in the replacement map is lower-case should preserve the case of the original string", function() {
+			replaceMaps = [ [false, 'aaa', 'xx'] ];
+			maxSize = 0;
+			tweet = 'AAA Aaa aaa ';
+			var tweetThatFits = 'XX Xx xx ';
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			
+			target.shortenTweet(tweet);
+			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
+						
+			expect(shortenedTweet).toEqual(tweetThatFits);
+		});
+		
+		it("when the shortened string in the replacement map is not lower-case should preserve the case of the shortened string", function() {
+			replaceMaps = [ [false, 'aaa', 'Xx'], [false, 'bbb', 'yY'], [false, 'ccc', 'ZZ']  ];
+			maxSize = 0;
+			tweet = 'AAA Bbb ccc ';
+			var tweetThatFits = 'Xx yY ZZ ';
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			
+			target.shortenTweet(tweet);
+			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
+						
+			expect(shortenedTweet).toEqual(tweetThatFits);
+		});
+		
+		it("when the replacement map specify a substring should replace substrings", function() {
+			replaceMaps = [ [true, 'to', '2'] ];
+			maxSize = 0;
+			tweet = 'today tonight acclamatory';
+			var tweetThatFits = '2day 2night acclama2ry';
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			
+			target.shortenTweet(tweet);
+			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
+						
+			expect(shortenedTweet).toEqual(tweetThatFits);			
+		});
+
+		it("when the replacement map specify a full string and the tweet contains both a substring and then a complete string should replace the complete string", function() {
+			replaceMaps = [ [false, 'to', '2'] ];
+			maxSize = 0;
+			tweet = 'today to me';
+			var tweetThatFits = 'today 2 me';
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			
+			target.shortenTweet(tweet);
+			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
+						
+			expect(shortenedTweet).toEqual(tweetThatFits);			
+		});
+		
 	});
 	
 });
