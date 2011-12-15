@@ -1,6 +1,6 @@
 # tweeeeeeeeeet
 
-1. download the latest version
+1. download the [latest version] (https://github.com/lucaminudel/tweeeeeeeeeet/downloads)
 1. extract the files
 1. open the htlm page locally in your browser
 1. type your tweet and click the button to shorten it
@@ -20,3 +20,4 @@
 ### libraries used, thanks to
 - http://pivotal.github.com/jasmine/ for the tests in the spec folder
 - https://github.com/mojombo/clippy/ for the copy to clipboard flash library
+- http://www.jslint.com/ for the check of the JavaScript code quality
