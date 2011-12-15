@@ -12,8 +12,8 @@
 - shortening instructions are evaluated following their order starting from the first one, until the tweet fit the 140 character limit
 - when the shortened string on the right is not lower case, its case is preserved otherwise the original string case (upper, lower or capital) is used instead
 
-### implementation noter
-- this is still a beta version, send your feedback [here] (https://github.com/lucaminudel/tweeeeeeeeeet/issues) or [here] (https://twitter.com/lukadotnet)
+### implementation notes
+- this is still a beta version, send your feedback [here] (https://github.com/lucaminudel/tweeeeeeeeeet/issues) and [here] (https://twitter.com/lukadotnet)
 - todo: add automatic JSLint check script, add integration tests between parser and the interpreter, add a button to save chages to the Tweeeeeeeeeet instructions locally with one click.
 
 ### libraries used, thanks to
