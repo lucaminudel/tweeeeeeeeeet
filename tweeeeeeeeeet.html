@@ -4,21 +4,34 @@
 <script src='tweeeeeeeeeet.js'></script>
 <script type="text/javascript">
 	"use strict";
-
+	
+	function getNodeText(node) {
+		return (node.textContent || node.innerText);
+	}
+	
+	function setNodeText(node, text) {
+		if(node.innerText){
+			node.innerText = text;
+		}else{
+			node.textContent = text;
+		}	
+	}
+	
+	
 	function escapeQuotationMarkCharacters(text) {
 		return text.replace(/'/g, "''");
 	}
 
 	function showResultLength() {
-		var result = document.getElementById('result').textContent;
+		var result = getNodeText(document.getElementById('result'));
 		var tweetSize = tweeeeeeeeeet.createTweetSizeObject(result);
 		var resultWithSortenedLinksLength = tweetSize.lengthWithShortenedUrls();
-		document.getElementById('resultLength').textContent = resultWithSortenedLinksLength;
+		setNodeText(document.getElementById('resultLength'), resultWithSortenedLinksLength);
 		
 		var resultLength = result.length;
-		document.getElementById('shortenedLink').textContent = '';
+		setNodeText(document.getElementById('shortenedLink'), '');
 		if (resultLength !== resultWithSortenedLinksLength) {
-			document.getElementById('shortenedLink').textContent = '(Links will be shortened)';		
+			setNodeText(document.getElementById('shortenedLink'), '(Links will be shortened)');
 		}
 	}
 
@@ -26,17 +39,17 @@
 	
 		showLength();
 		
-		document.getElementById('errorMessage').textContent = '';
+		setNodeText(document.getElementById('errorMessage'), '');
 		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
 		var parseResult = '';
 		try{
 			 parseResult = parser.parse(program);
 		}
 		catch(e) {
-			document.getElementById('errorMessage').textContent = e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message;
+			setNodeText(document.getElementById('errorMessage'), e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message);
 		}
 		
-		document.getElementById('result').textContent = parseResult;
+		setNodeText(document.getElementById('result'), parseResult);
 		
 		if (parseResult === '') { parseResult = ' '; }		
 		document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
@@ -45,7 +58,7 @@
 	}
 
 	function showLength() {
-		document.getElementById('yourTweetLength').textContent = document.getElementById('yourTweet').value.length;
+		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
 	}
 
 	window.onload = function() {
@@ -53,7 +66,7 @@
 		document.getElementById('yourTweet').onchange = showLength;
 	};	
 </script>
-<title>tweeeeeeeeeet 0.3 (beta)</title>
+<title>tweeeeeeeeeet 0.4 (beta)</title>
 </head>
 <body>
 <form>
