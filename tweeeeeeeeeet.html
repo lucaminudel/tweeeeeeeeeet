@@ -51,7 +51,8 @@
 		
 		setNodeText(document.getElementById('result'), parseResult);
 		
-		if (parseResult === '') { parseResult = ' '; }		
+		if (parseResult === '') { parseResult = ' '; } 		
+		parseResult = escape(parseResult);
 		document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
 		
 		showResultLength();
@@ -81,7 +82,8 @@
 	<textarea id='result' readonly=true rows='4' cols='80' style='background-color:#d0e4fe;'>Your tweet shortened here.</textarea>
 	<br />
 	<label>Lenght: </label><span id='resultLength' >0</span> <span id='shortenedLink' ></span>  
-	<span id='copyClipboard'></span>
+	<span id='copyClipboard'>
+	</span>
 	<br />
 	<br />
 
@@ -118,14 +120,6 @@ withAbbreviations:
   'thousand' -> '1000'
   'thousands' -> '1000'
   'for example' -> 'e.g.'
-  'as far as I know' -> 'AFAIK'
-  'as far as I understand' -> 'AFAIU'
-  'as far as I understood' -> 'AFAIU'
-  'today' -> '2day'
-  'tonight' -> '2night'
-  'tomorrow' -> '2morrow'
-  'together' -> '2gether'
-  'for ever' -> '4ever'
   'do not' -> 'don''t'
   'does not' -> 'doesn''t'
   'did not' -> 'did''t'
@@ -136,6 +130,16 @@ withAbbreviations:
   'we are' -> 'we''re'
   'they are' -> 'they''re'
   'you are' -> 'you''re'  
+  'information' -> 'info'
+  'as far as I know' -> 'AFAIK'
+  'as far as I understand' -> 'AFAIU'
+  'as far as I understood' -> 'AFAIU'
+  'today' -> '2day'
+  'tonight' -> '2night'
+  'tomorrow' -> '2morrow'
+  'together' -> '2gether'
+  'for ever' -> '4ever'
+  'afford' -> 'a4rd'
   'you''re' -> 'UR'
   'for you' -> '4U'
   'see you' -> 'CU'
@@ -147,7 +151,7 @@ withAbbreviations:
   'busy' -> 'BZ'
   'easy' -> 'EZ'
   'number' -> '#'
-  'people' -> 'Ppl'
+  'people' -> 'ppl'
   'to be' -> '2B'
   'too late' -> '2L8'
   'late' -> 'L8'
