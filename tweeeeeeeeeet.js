@@ -344,9 +344,9 @@ parser = (function(){
         reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
-        if (input.substr(pos, 17) === "replaceUntilFitsInto") {
+        if (input.substr(pos, 20) === "replaceUntilFitsInto") {
           var result3 = "replaceUntilFitsInto";
-          pos += 17;
+          pos += 20;
         } else {
           var result3 = null;
           if (reportMatchFailures) {
