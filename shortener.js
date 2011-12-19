@@ -56,12 +56,12 @@ tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, a
 				
 				var previousChar = ' ';
 				if (indexBegin > 0) {
-					previousChar = _tweet[indexBegin -1];
+					previousChar = _tweet.charAt(indexBegin -1);
 				}
 				
 				var successorChar = ' ';
 				if (indexEnd < _tweet.length) {
-					successorChar = _tweet[indexEnd];
+					successorChar = _tweet.charAt(indexEnd);
 				}
 				
 				if (_isSubstring === false && (!previousChar.match(/\W/) || !successorChar.match(/\W/))) {
@@ -103,7 +103,7 @@ tweeeeeeeeeet.createTweetAbbreviationObject = function (tweet, originalString, a
 tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 		
 	var _tweet = tweet;
-	var _maxSize =  ( typeof(maxSize) !== 'undefined' ? maxSize : 0 );
+	var _maxSize =  ( typeof maxSize !== 'undefined' ? maxSize : 0 );
 
 	
 	return {		
@@ -119,7 +119,7 @@ tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 				length = tweet.length;
 				shortUrlsLength += 19;
 
-				if (match.indexOf('s') > 0) {
+				if (match[0].indexOf('s') > 0) {
 					shortUrlsLength += 1;
 				}						
 			}
