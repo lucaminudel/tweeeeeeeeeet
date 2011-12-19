@@ -344,13 +344,13 @@ parser = (function(){
         reportMatchFailures = false;
         var savedPos0 = pos;
         var savedPos1 = pos;
-        if (input.substr(pos, 17) === "replaceUntilFitTo") {
-          var result3 = "replaceUntilFitTo";
+        if (input.substr(pos, 17) === "replaceUntilFitsInto") {
+          var result3 = "replaceUntilFitsInto";
           pos += 17;
         } else {
           var result3 = null;
           if (reportMatchFailures) {
-            matchFailed("\"replaceUntilFitTo\"");
+            matchFailed("\"replaceUntilFitsInto\"");
           }
         }
         if (result3 !== null) {
@@ -384,7 +384,7 @@ parser = (function(){
         }
         reportMatchFailures = savedReportMatchFailures;
         if (reportMatchFailures && result0 === null) {
-          matchFailed("replaceUntilFitTo:");
+          matchFailed("replaceUntilFitsInto:");
         }
         
         cache[cacheKey] = {

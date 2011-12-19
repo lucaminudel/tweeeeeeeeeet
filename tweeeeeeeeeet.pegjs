@@ -13,7 +13,7 @@ replaceUntilFitMethod = ws replaceUntilFitKeyword
 
 shortenTweetKeyword "shortenTweet:" = first:"shortenTweet" last:[:] { return first + last }
 
-replaceUntilFitKeyword "replaceUntilFitTo:" = first:"replaceUntilFitTo" last:[:] { return first + last }
+replaceUntilFitKeyword "replaceUntilFitsInto:" = first:"replaceUntilFitsInto" last:[:] { return first + last }
 
 withAbbreviationsKeyword = first:"withAbbreviations" last:[:] { return first + last }
 
