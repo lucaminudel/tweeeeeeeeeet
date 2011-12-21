@@ -88,7 +88,8 @@ describe("Tweet Shortener", function() {
 					var matchResult = target.findNextMatch();
 					
 					expect(matchResult).toBeTruthy();
-				});	
+				});					
+				
 			});
 			
 			
@@ -351,3 +352,51 @@ describe("Tweet Shortener", function() {
 	});
 	
 });
+
+describe("Integration tests", function() {
+	describe("Parser with shortener", function() {	
+		var program;
+		var tweet;
+		var shortenedTweet;
+		
+		it("when the program is valid should return the shortened tweet", function() {
+			
+			tweet = ' aaaa aa one ';			
+			program = "shortenTweet: '" + tweet + "' " 
+					+ "replaceUntilFitsInto: 1 "
+					+ "withAbbreviations: ("
+					+ "substring: 'aa' -> 'a' " 
+					+ "'one' -> '1'"
+					+ ")";
+			
+			shortenedTweet = parser.parse(program);
+			
+			expect(shortenedTweet).toEqual(' aa aa 1 ');
+		});
+		
+		it("when the program is valid should throw and exception with error info", function() {
+			
+			tweet = ' aaaa aa one ';			
+			program = "shortenTweet: '" + tweet + "' \n" 
+					+ "replaceUntilRain: "
+					+ "withAbbreviations: ("
+					+ "substring: 'aa' -> 'a' " 
+					+ "'one' -> '1'"
+					+ ")";
+			
+			try {
+				shortenedTweet = parser.parse(program);				
+			}
+			catch(e) {
+				expect(e.line).toEqual(2);
+				expect(e.column).toEqual(1);				
+				expect(e.message).toBeGreaterThan('');
+				return;
+			}
+			
+			expect(false).toBeTruthy();
+		});
+		
+	});
+});
+
