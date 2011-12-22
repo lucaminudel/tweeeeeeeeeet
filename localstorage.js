@@ -28,6 +28,7 @@ tweeeeeeeeeet.localStorage = {
 	  this.length--;
 	},
 	hasOwnProperty: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
-	};
-	tweeeeeeeeeet.localStorage.length = (document.cookie.match(/\=/g) || tweeeeeeeeeet.localStorage).length;
-}
+};
+
+tweeeeeeeeeet.localStorage.length = (document.cookie.match(/\=/g) || tweeeeeeeeeet.localStorage).length;
+
