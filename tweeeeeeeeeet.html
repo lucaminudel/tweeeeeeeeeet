@@ -12,7 +12,7 @@
 	}
 	
 	function setNodeText(node, text) {
-		if(node.innerText){
+		if(typeof node.innerText !== 'undefined'){
 			node.innerText = text;
 		}else{
 			node.textContent = text;
@@ -49,13 +49,15 @@
 		}
 		catch(e) {
 			setNodeText(document.getElementById('errorMessage'), e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message);
+			return;
 		}
-		
-		setNodeText(document.getElementById('result'), parseResult);
-		
-		if (parseResult === '') { parseResult = ' '; } 		
-		parseResult = escape(parseResult);
-		document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
+		finally {		
+			setNodeText(document.getElementById('result'), parseResult);
+			
+			if (parseResult === '') { parseResult = ' '; } 		
+			parseResult = escape(parseResult);
+			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
+		}
 		
 		showResultLength();
 	}
@@ -65,8 +67,24 @@
 	}
 
 	window.onload = function() {
-		document.getElementById('shortenBotton').onclick = shorten;
+		document.getElementById('shortenButton').onclick = shorten;
 		document.getElementById('yourTweet').onchange = showLength;
+		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { document.getElementById('saveButton').disabled = false; };
+		document.getElementById('saveButton').onclick = function() { 
+			shorten();
+			if (getNodeText(document.getElementById('errorMessage')).length === 0) {
+				document.getElementById('saveButton').disabled = true; document.getElementById('loadButton').disabled = false;
+			} else {
+				alert('Correct Syntax error before saving. ');
+			}
+		};
+		document.getElementById('loadButton').onclick = function() { document.getElementById('saveButton').disabled = true; document.getElementById('loadButton').disabled = false;};
+		window.onbeforeunload = function() { 
+			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
+			if (!document.getElementById('saveButton').disabled) {
+				return "Tweeeeeeeeeet instructions has been modified but not saved."; 
+			}; 
+		};
 	};	
 </script>
 <style type="text/css">
@@ -123,7 +141,7 @@
 	<h1>Your tweeeeeeeeeet</h1>
 	<textarea id='yourTweet' rows='4' cols='80'></textarea>
 	<br />
-	<button type='button' id='shortenBotton'>Shorten your tweet</button>   <label>Length: </label><span id='yourTweetLength' >0</span>
+	<button type='button' id='shortenButton'>Shorten your tweet</button>   <label>Length: </label><span id='yourTweetLength' >0</span>
 	<br />
 	<br />
 	
@@ -137,11 +155,17 @@
 	<br />
 
 	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
-	<dfn>Note: If you change the Tweeeeeeeeeet instructions, for example you add an abbreviation or you change order of abbreviations, the changes will get lost when you close this page.</dfn>
-	<br />
-	<dfn>To persist your changes you need to edit this tweeeeeeeeeet.html file, add your changes and save it.</dfn>
-	<br />
     <span id='errorMessage' style='color:red;'></span>
+	<br />
+	<button type='button' id='loadButton' disabled='true'>Load</button>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button type='button' id='saveButton' disabled='true'>Save</button>
 	<br />
 	<textarea id='tweeeeeeeeeetProgram'  cols='60' rows='128'>replaceUntilFitsInto: 140
 withAbbreviations:
