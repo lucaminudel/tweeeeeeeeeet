@@ -8,7 +8,11 @@
 	"use strict";
 	
 	function getNodeText(node) {
-		return (node.textContent || node.innerText);
+		if(typeof node.innerText !== 'undefined'){
+			return node.innerText;
+		}else{
+			return  node.textContent;
+		}	
 	}
 	
 	function setNodeText(node, text) {
