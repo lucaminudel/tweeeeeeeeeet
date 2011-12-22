@@ -7,6 +7,8 @@
 <script type="text/javascript">
 	"use strict";
 	
+	var TweeeeeeeeeetInstructionsVersion = '0.5.2 (beta)';	
+	
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
 			return node.innerText;
@@ -70,19 +72,67 @@
 		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
 	}
 
+	function SaveTweeeeeeeeeetInstructionsOnLocalStorage() {
+		var tweeeeeeeeeetInstructions = document.getElementById('tweeeeeeeeeetProgram').value;
+		var size = tweeeeeeeeeetInstructions.length;
+		var blockSize = 1024;
+		var blocks = Math.ceil(size / blockSize);
+		
+		var i;
+		for(i = 0; i < blocks; ++i) {
+			tweeeeeeeeeet.localStorage.setItem('TweeeeeeeeeetInstructions_Code_' + i.toString(), tweeeeeeeeeetInstructions.substring(blockSize * i, blockSize * (i+1)));		
+		}		
+		tweeeeeeeeeet.localStorage.removeItem('TweeeeeeeeeetInstructions_Code_' + blocks.toString());
+		
+		tweeeeeeeeeet.localStorage.setItem('TweeeeeeeeeetInstructions_Version', TweeeeeeeeeetInstructionsVersion);
+	}
+	
+	function LoadTweeeeeeeeeetInstructionsFromOnLocalStorage() {
+		if (tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version') === false) {		
+			return;
+		}
+
+		var tweeeeeeeeeetInstructions = '';
+		var i = 0;
+		while(tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Code_' + i.toString())) {
+			tweeeeeeeeeetInstructions += tweeeeeeeeeet.localStorage.getItem('TweeeeeeeeeetInstructions_Code_' + i.toString());
+			++i;
+		};
+
+		document.getElementById('tweeeeeeeeeetProgram').value = tweeeeeeeeeetInstructions;
+	}
+	
+	function TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty() {
+		return !tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version');
+	}
+	
 	window.onload = function() {
 		document.getElementById('shortenButton').onclick = shorten;
 		document.getElementById('yourTweet').onchange = showLength;
-		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { document.getElementById('saveButton').disabled = false; };
+		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { 
+			document.getElementById('saveButton').disabled = false; 
+			document.getElementById('loadButton').disabled = TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty();
+		};
 		document.getElementById('saveButton').onclick = function() { 
 			shorten();
 			if (getNodeText(document.getElementById('errorMessage')).length === 0) {
-				document.getElementById('saveButton').disabled = true; document.getElementById('loadButton').disabled = false;
+				document.getElementById('saveButton').disabled = true; 
+				document.getElementById('loadButton').disabled = true;
+				
+				SaveTweeeeeeeeeetInstructionsOnLocalStorage();
 			} else {
 				alert('Correct Syntax error before saving. ');
 			}
 		};
-		document.getElementById('loadButton').onclick = function() { document.getElementById('saveButton').disabled = true; document.getElementById('loadButton').disabled = false;};
+		document.getElementById('loadButton').onclick = function() { 
+			document.getElementById('saveButton').disabled = true; 
+			document.getElementById('loadButton').disabled = true;
+			
+			LoadTweeeeeeeeeetInstructionsFromOnLocalStorage();
+		};
+		
+		document.getElementById('loadButton').disabled = TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty();
+		
 		window.onbeforeunload = function() { 
 			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
 			if (!document.getElementById('saveButton').disabled) {
