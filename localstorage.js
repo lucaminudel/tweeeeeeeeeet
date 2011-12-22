@@ -6,8 +6,10 @@
 // This is a less exact imitation of the localStorage object. It is simpler, but it is compatible with old browsers, 
 // like Internet Explorer < 8. It also makes use of cookies.
 
+var tweeeeeeeeeet = (tweeeeeeeeeet === null || typeof tweeeeeeeeeet === 'undefined') ? {} : tweeeeeeeeeet;
+
 if (!window.localStorage) {
-  window.localStorage = {
+  tweeeeeeeeeet.localStorage = {
     getItem: function (sKey) {
       if (!sKey || !this.hasOwnProperty(sKey)) { return null; }
       return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
@@ -28,5 +30,7 @@ if (!window.localStorage) {
     },
     hasOwnProperty: function (sKey) { return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie); }
   };
-  window.localStorage.length = (document.cookie.match(/\=/g) || window.localStorage).length;
+  tweeeeeeeeeet.localStorage.length = (document.cookie.match(/\=/g) || tweeeeeeeeeet.localStorage).length;
+} else {
+  tweeeeeeeeeet.localStorage = window.localStorage;
 }
