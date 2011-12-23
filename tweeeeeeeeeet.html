@@ -3,11 +3,13 @@
 <script src='shortener.js'></script>
 <script src='tweeeeeeeeeet.js'></script>
 <script src='localstorage.js'></script>
+<script src='simplerestclient.js'></script>
+
 
 <script type="text/javascript">
 	"use strict";
 	
-	var TweeeeeeeeeetInstructionsVersion = '0.5.2 (beta)';	
+	var TweeeeeeeeeetInstructionsVersion = '0.6 (beta)';	
 	
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
@@ -85,6 +87,10 @@
 		tweeeeeeeeeet.localStorage.removeItem('TweeeeeeeeeetInstructions_Code_' + blocks.toString());
 		
 		tweeeeeeeeeet.localStorage.setItem('TweeeeeeeeeetInstructions_Version', TweeeeeeeeeetInstructionsVersion);
+		
+		var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();
+		
+		simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', tweeeeeeeeeetInstructions);
 	}
 	
 	function LoadTweeeeeeeeeetInstructionsFromOnLocalStorage() {
@@ -180,7 +186,7 @@
 
 </style>
 
-<title>tweeeeeeeeeet 0.5.2 (beta)</title>
+<title>tweeeeeeeeeet 0.6 (beta)</title>
 </head>
 <body>
 <form>

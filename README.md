@@ -14,7 +14,8 @@
 
 ### implementation notes
 - this is still a beta version, send your feedback [here] (https://github.com/lucaminudel/tweeeeeeeeeet/issues) and [here] (https://twitter.com/lukadotnet)
-- todo: add automatic JSLint check script, add integration tests between parser and the interpreter, add a button to save chages to the Tweeeeeeeeeet instructions locally with one click.
+- when the user edit and then save the  Tweeeeeeeeeet instructions, a copy of the changed instructions are stored in the server
+- todo: add automatic JSLint check script.
 
 ### libraries used, thanks to
 - http://pegjs.majda.cz/ PEG.js used to create the parser of the Tweeeeeeeeeet instructions
