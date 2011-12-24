@@ -9,8 +9,6 @@
 <script type="text/javascript">
 	"use strict";
 	
-	var TweeeeeeeeeetInstructionsVersion = '0.6 (beta)';
-	
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
 			return node.innerText;
@@ -72,51 +70,58 @@
 	function showLength() {
 		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
 	}
-	
-	function SaveTweeeeeeeeeetInstructionsOnLocalStorage() {
-		var tweeeeeeeeeetInstructions = document.getElementById('tweeeeeeeeeetProgram').value;
-		var size = tweeeeeeeeeetInstructions.length;
-		var blockSize = 1024;
-		var blocks = Math.ceil(size / blockSize);
-		
-		var i;
-		for(i = 0; i < blocks; ++i) {
-			tweeeeeeeeeet.localStorage.setItem('TweeeeeeeeeetInstructions_Code_' + i.toString(), tweeeeeeeeeetInstructions.substring(blockSize * i, blockSize * (i+1)));		
-		}		
-		tweeeeeeeeeet.localStorage.removeItem('TweeeeeeeeeetInstructions_Code_' + blocks.toString());
-		
-		tweeeeeeeeeet.localStorage.setItem('TweeeeeeeeeetInstructions_Version', TweeeeeeeeeetInstructionsVersion);
-		
-		var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();
-		
-		simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', tweeeeeeeeeetInstructions);
-	}
-	
-	function LoadTweeeeeeeeeetInstructionsFromOnLocalStorage() {
-		if (tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version') === false) {		
-			return;
-		}
 
-		var tweeeeeeeeeetInstructions = '';
-		var i = 0;
-		while(tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Code_' + i.toString())) {
-			tweeeeeeeeeetInstructions += tweeeeeeeeeet.localStorage.getItem('TweeeeeeeeeetInstructions_Code_' + i.toString());
-			++i;
-		}
+	function createTweeeeeeeeeetInstructionsObject(localStorage) {
+		
+		var _localStorage = localStorage;
+		
+		return {
+			version: '0.6 (beta)',
 
-		document.getElementById('tweeeeeeeeeetProgram').value = tweeeeeeeeeetInstructions;
+			localStorageIsEmpty: function() {
+				return !tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version');
+			},
+			
+			loadFromLocalStorage: function() {
+				var instructions = '';
+
+				if (tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version') === false) {		
+					return instructions;
+				}
+
+				var i = 0;
+				while(tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Code_' + i.toString())) {
+					instructions += tweeeeeeeeeet.localStorage.getItem('TweeeeeeeeeetInstructions_Code_' + i.toString());
+					++i;
+				}
+
+				return instructions;
+			},
+			
+			saveOnLocalStorage: function(instructions) {				
+				var size = instructions.length;
+				var blockSize = 1024;
+				var blocks = Math.ceil(size / blockSize);
+				
+				var i;
+				for(i = 0; i < blocks; ++i) {
+					_localStorage.setItem('TweeeeeeeeeetInstructions_Code_' + i.toString(), instructions.substring(blockSize * i, blockSize * (i+1)));		
+				}		
+				_localStorage.removeItem('TweeeeeeeeeetInstructions_Code_' + blocks.toString());
+				
+				_localStorage.setItem('TweeeeeeeeeetInstructions_Version', version);				
+			}						
+		};
 	}
 	
-	function TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty() {
-		return !tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version');
-	}
-	
+	var tweeeeeeeeeetInstructions = createTweeeeeeeeeetInstructionsObject(tweeeeeeeeeet.localStorage);
+		
 	window.onload = function() {
 		document.getElementById('shortenButton').onclick = shorten;
 		document.getElementById('yourTweet').onchange = showLength;
 		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { 
 			document.getElementById('saveButton').disabled = false; 
-			document.getElementById('loadButton').disabled = TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty();
+			document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
 		};
 		document.getElementById('saveButton').onclick = function() { 
 			shorten();
@@ -124,7 +129,9 @@
 				document.getElementById('saveButton').disabled = true; 
 				document.getElementById('loadButton').disabled = true;
 				
-				SaveTweeeeeeeeeetInstructionsOnLocalStorage();
+				tweeeeeeeeeetInstructions.saveOnLocalStorage(document.getElementById('tweeeeeeeeeetProgram').value);
+				var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();				
+				simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', document.getElementById('tweeeeeeeeeetProgram').value);				
 			} else {
 				alert('Correct Syntax error before saving. ');
 			}
@@ -133,10 +140,10 @@
 			document.getElementById('saveButton').disabled = true; 
 			document.getElementById('loadButton').disabled = true;
 			
-			LoadTweeeeeeeeeetInstructionsFromOnLocalStorage();
+			document.getElementById('tweeeeeeeeeetProgram').value = tweeeeeeeeeetInstructions.loadFromLocalStorage();
 		};
 		
-		document.getElementById('loadButton').disabled = TweeeeeeeeeetInstructionsOnOnLocalStorageIsEmpty();
+		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
 		
 		window.onbeforeunload = function() { 
 			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
