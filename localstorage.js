@@ -16,7 +16,9 @@ tweeeeeeeeeet.localStorage = {
 	key: function (nKeyId) { return unescape(document.cookie.replace(/\s*\=(?:.(?!;))*$/, "").split(/\s*\=(?:[^;](?!;))*[^;]?;\s*/)[nKeyId]); },
 	setItem: function (sKey, sValue) {
 	  if(!sKey) { return; }
-	  document.cookie = escape(sKey) + "=" + escape(sValue) + "; path=/";
+	  var sExpDate = new Date();
+	  sExpDate.setYear(sExpDate.getFullYear() + 1);	  
+	  document.cookie = escape(sKey) + "=" + escape(sValue) + "; expires=" + sExpDate.toGMTString() + "; path=/";
 	  this.length = document.cookie.match(/\=/g).length;
 	},
 	length: 0,
