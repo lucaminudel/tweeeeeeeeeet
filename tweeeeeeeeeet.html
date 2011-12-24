@@ -25,6 +25,16 @@
 		}	
 	}
 	
+	function setTweeeeeeeeeetProgram(code) {
+		var linesCount = code.match(/\n/g).length;
+		document.getElementById('tweeeeeeeeeetProgram').rows = linesCount + 5;
+		document.getElementById('tweeeeeeeeeetProgram').value = code;
+	}
+	
+	function getTweeeeeeeeeetProgram() {
+		return document.getElementById('tweeeeeeeeeetProgram').value;
+	}
+	
 	function escapeQuotationMarkCharacters(text) {
 		return text.replace(/'/g, "''");
 	}
@@ -71,12 +81,149 @@
 		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
 	}
 
-	function createTweeeeeeeeeetInstructionsObject(localStorage) {
+	function createTweeeeeeeeeetInstructionsObject(localStorage, tweetLanguage) {
 		
 		var _localStorage = localStorage;
+		var _tweetLanguage = tweetLanguage;
+		
+		var _versionKey = { 'eng': 'TweeeeeeeeeetInstructions_Version' };
+		var _instructionsKey = { 'eng': 'TweeeeeeeeeetInstructions_Code_' };
+
+		var _version = { 'eng': '0.6 (beta)' };
+		var _instructions = { 'eng': 
+			"replaceUntilFitsInto: 140\n"
+			+ "withAbbreviations:\n"
+			+ "(\n"
+			+ "  substring: '  ' -> ' '\n"
+			+ "  'with' -> 'w/'\n"
+			+ "  'and' -> '&'\n"
+			+ "  'without' -> 'w/o'\n"
+			+ "  'someone' -> 'some1'\n"
+			+ "  'some1' -> 's/o'\n"
+			+ "  'something' -> 's/t'\n"
+			+ "  'before' -> 'b4'\n"
+			+ "  'because' -> 'b/c'\n"
+			+ "  'by the way' -> 'BDW'\n"
+			+ "  'between' -> 'b/w'\n"
+			+ "  'one' -> '1'\n"
+			+ "  'once' -> '1NC'\n"
+			+ "  'two' -> '2'\n"
+			+ "  'three' -> '3'\n"
+			+ "  'four' -> '4'\n"
+			+ "  'ten' -> '10'\n"
+			+ "  'tens' -> '10s'\n"
+			+ "  'hundred' -> '100'\n"
+			+ "  'hundreds' -> '100s'\n"
+			+ "  'thousand' -> '1000'\n"
+			+ "  'thousands' -> '1000'\n"
+			+ "  'for example' -> 'e.g.'\n"
+			+ "  'do not' -> 'don''t'\n"
+			+ "  'does not' -> 'doesn''t'\n"
+			+ "  'did not' -> 'did''t'\n"
+			+ "  'I am' -> 'I''m'\n"
+			+ "  'it is' -> 'it''s'\n"
+			+ "  'he is' -> 'he''s'\n"
+			+ "  'she is' -> 'she''s'\n"
+			+ "  'we are' -> 'we''re'\n"
+			+ "  'they are' -> 'they''re'\n"
+			+ "  'you are' -> 'you''re'\n"
+			+ "  'information' -> 'info'\n"
+			+ "  'as far as I know' -> 'AFAIK'\n"
+			+ "  'as far as I understand' -> 'AFAIU'\n"
+			+ "  'as far as I understood' -> 'AFAIU'\n"
+			+ "  'today' -> '2day'\n"
+			+ "  'tonight' -> '2night'\n"
+			+ "  'tomorrow' -> '2morrow'\n"
+			+ "  'together' -> '2gether'\n"
+			+ "  'for ever' -> '4ever'\n"
+			+ "  'afford' -> 'a4rd'\n"
+			+ "  'you''re' -> 'UR'\n"
+			+ "  'for you' -> '4U'\n"
+			+ "  'see you' -> 'CU'\n"
+			+ "  'you' -> 'U'\n"
+			+ "  'are' -> 'R'\n"
+			+ "  'why' -> 'Y'\n"
+			+ "  'key' -> 'K'\n"
+			+ "  'versus' -> 'Vs'\n"
+			+ "  'busy' -> 'BZ'\n"
+			+ "  'easy' -> 'EZ'\n"
+			+ "  'number' -> '#'\n"
+			+ "  'people' -> 'ppl'\n"
+			+ "  'be' -> 'B'\n"
+			+ "  'to B' -> '2B'\n"
+			+ "  'too late' -> '2L8'\n"
+			+ "  'late' -> 'L8'\n"
+			+ "  'later' -> 'L8r'\n"
+			+ "  'matter' -> 'M8r'\n"
+			+ "  'great' -> 'gr8'\n"
+			+ "  'wait' -> 'w8'\n"
+			+ "  'waiting' -> 'w8N'\n"
+			+ "  'hate' -> '8'\n"
+			+ "  'greater than' -> '>'\n"
+			+ "  'less than' -> '<'\n"
+			+ "  'thanks' -> '10X'\n"
+			+ "  'thank you' -> '10U'\n"
+			+ "  'threesome ' -> '3SUM'\n"
+			+ "  'I see' -> 'IC'\n"
+			+ "  'excellent' -> 'XLNT'\n"
+			+ "  'excel' -> 'XL'\n"
+			+ "  'at work' -> '@WRK'\n"
+			+ "  'work' -> 'WRK'\n"
+			+ "  'at' -> '@'\n"
+			+ "  'don''t' -> 'DNT'\n"
+			+ "  'effective' -> 'Fective'\n"
+			+ "  'for' -> '4'\n"
+			+ "  'to' -> '2'\n"
+			+ "  'too' -> '2'\n"
+			+ "  'the' -> 'D'\n"
+			+ "  'their' -> 'Dr'\n"
+			+ "  'that' -> 'Dt'\n"
+			+ "  'this' -> 'Ds'\n"
+			+ "  'than' -> 'Dn'\n"
+			+ "  'then' -> 'Dn'\n"
+			+ "  'your' -> 'Ur'\n"
+			+ "  'from' -> 'frm'\n"
+			+ "  'increase' -> 'incr.'\n"
+			+ "  'increases' -> 'incr.'\n"
+			+ "  'decrease' -> 'decr.'\n"
+			+ "  'decreases' -> 'decr.'\n"
+			+ "  'development' -> 'dev.mnt'\n"
+			+ "  'dev.mnt' ->  'dev'\n"
+			+ "  'system' -> 'sys'\n"
+			+ "  'see' -> 'C'\n"
+			+ "  substring: ' ,' -> ','\n"
+			+ "  substring: ', ' -> ','\n"
+			+ "  substring: ' .' -> '.'\n"
+			+ "  substring: ' :' -> ':'\n"
+			+ "  substring: ': ' -> ':'\n"
+			+ "  substring: ' ;' -> ';'\n"
+			+ "  substring: '; ' -> ';'\n"
+			+ "  substring: 'too' -> '2'\n"
+			+ "  substring: 'to' -> '2'\n"
+			+ "  substring: 'hate' -> '8'\n"
+			+ "  substring: 'eat' -> '8'\n"
+			+ "  substring: 'ait' -> '8'\n"
+			+ "  substring: 'two' -> '2'\n"
+			+ "  substring: 'tree' -> '3'\n"
+			+ "  substring: 'ttre' -> '3'\n"
+			+ "  substring: 'tre' -> '3'\n"
+			+ "  substring: 'four' -> '4'\n"
+			+ "  substring: 'for' -> '4'\n"
+			+ "  substring: 'see' -> 'C'\n"
+			+ "  substring: ' \"' -> '\"'\n"
+			+ "  substring: '\" ' -> '\"'\n"
+			+ "  substring: ' (' -> '('\n"
+			+ "  substring: '( ' -> '('\n"
+			+ "  substring: ' )' -> ')'\n"
+			+ "  substring: ') ' -> ')'\n"
+			+ "  substring: '& ' -> '&'\n"
+			+ "  substring: ' &' -> '&'\n"
+			+ " )"
+		};
 		
 		return {
-			version: '0.6 (beta)',
+			version: function() { return _version[_tweetLanguage]; },
+			program: function() { return _instructions[_tweetLanguage]; },
 
 			localStorageIsEmpty: function() {
 				return !tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version');
@@ -85,13 +232,13 @@
 			loadFromLocalStorage: function() {
 				var instructions = '';
 
-				if (tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version') === false) {		
+				if (tweeeeeeeeeet.localStorage.hasOwnProperty(_versionKey[_tweetLanguage]) === false) {		
 					return instructions;
 				}
 
 				var i = 0;
-				while(tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Code_' + i.toString())) {
-					instructions += tweeeeeeeeeet.localStorage.getItem('TweeeeeeeeeetInstructions_Code_' + i.toString());
+				while(tweeeeeeeeeet.localStorage.hasOwnProperty(_instructionsKey[_tweetLanguage] + i.toString())) {
+					instructions += tweeeeeeeeeet.localStorage.getItem(_instructionsKey[_tweetLanguage] + i.toString());
 					++i;
 				}
 
@@ -105,16 +252,16 @@
 				
 				var i;
 				for(i = 0; i < blocks; ++i) {
-					_localStorage.setItem('TweeeeeeeeeetInstructions_Code_' + i.toString(), instructions.substring(blockSize * i, blockSize * (i+1)));		
+					_localStorage.setItem(_instructionsKey[_tweetLanguage] + i.toString(), instructions.substring(blockSize * i, blockSize * (i+1)));		
 				}		
-				_localStorage.removeItem('TweeeeeeeeeetInstructions_Code_' + blocks.toString());
+				_localStorage.removeItem(_instructionsKey[_tweetLanguage] + blocks.toString());
 				
-				_localStorage.setItem('TweeeeeeeeeetInstructions_Version', version);				
+				_localStorage.setItem(_versionKey[_tweetLanguage], version());				
 			}						
 		};
 	}
 	
-	var tweeeeeeeeeetInstructions = createTweeeeeeeeeetInstructionsObject(tweeeeeeeeeet.localStorage);
+	var tweeeeeeeeeetInstructions = createTweeeeeeeeeetInstructionsObject(tweeeeeeeeeet.localStorage, 'eng');
 		
 	window.onload = function() {
 		document.getElementById('shortenButton').onclick = shorten;
@@ -129,9 +276,9 @@
 				document.getElementById('saveButton').disabled = true; 
 				document.getElementById('loadButton').disabled = true;
 				
-				tweeeeeeeeeetInstructions.saveOnLocalStorage(document.getElementById('tweeeeeeeeeetProgram').value);
+				tweeeeeeeeeetInstructions.saveOnLocalStorage(getTweeeeeeeeeetProgram());
 				var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();				
-				simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', document.getElementById('tweeeeeeeeeetProgram').value);				
+				simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', getTweeeeeeeeeetProgram());				
 			} else {
 				alert('Correct Syntax error before saving. ');
 			}
@@ -140,17 +287,19 @@
 			document.getElementById('saveButton').disabled = true; 
 			document.getElementById('loadButton').disabled = true;
 			
-			document.getElementById('tweeeeeeeeeetProgram').value = tweeeeeeeeeetInstructions.loadFromLocalStorage();
+			setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.loadFromLocalStorage());
 		};
-		
-		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
-		
+				
 		window.onbeforeunload = function() { 
 			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
 			if (!document.getElementById('saveButton').disabled) {
 				return "Tweeeeeeeeeet instructions has been modified but not saved."; 
 			} 
 		};
+		
+		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
+		setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.program());
+		
 	};	
 </script>
 <style type="text/css">
@@ -233,134 +382,7 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<button type='button' id='saveButton' disabled='true'>Save</button>
 	<br />
-	<textarea id='tweeeeeeeeeetProgram'  cols='60' rows='128'>replaceUntilFitsInto: 140
-withAbbreviations:
-(
-  substring: '  ' -> ' '
-  'with' -> 'w/'
-  'and' -> '&'
-  'without' -> 'w/o'
-  'someone' -> 'some1'
-  'some1' -> 's/o'
-  'something' -> 's/t'
-  'before' -> 'b4'
-  'because' -> 'b/c'
-  'by the way' -> 'BDW'
-  'between' -> 'b/w'
-  'one' -> '1'
-  'once' -> '1NC'
-  'two' -> '2'
-  'three' -> '3'
-  'four' -> '4'
-  'ten' -> '10'
-  'tens' -> '10s'
-  'hundred' -> '100'
-  'hundreds' -> '100s'
-  'thousand' -> '1000'
-  'thousands' -> '1000'
-  'for example' -> 'e.g.'
-  'do not' -> 'don''t'
-  'does not' -> 'doesn''t'
-  'did not' -> 'did''t'
-  'I am' -> 'I''m'
-  'it is' -> 'it''s'
-  'he is' -> 'he''s'
-  'she is' -> 'she''s'
-  'we are' -> 'we''re'
-  'they are' -> 'they''re'
-  'you are' -> 'you''re'  
-  'information' -> 'info'
-  'as far as I know' -> 'AFAIK'
-  'as far as I understand' -> 'AFAIU'
-  'as far as I understood' -> 'AFAIU'
-  'today' -> '2day'
-  'tonight' -> '2night'
-  'tomorrow' -> '2morrow'
-  'together' -> '2gether'
-  'for ever' -> '4ever'
-  'afford' -> 'a4rd'
-  'you''re' -> 'UR'
-  'for you' -> '4U'
-  'see you' -> 'CU'
-  'you' -> 'U'
-  'are' -> 'R'
-  'why' -> 'Y'
-  'key' -> 'K'
-  'versus' -> 'Vs'
-  'busy' -> 'BZ'
-  'easy' -> 'EZ'
-  'number' -> '#'
-  'people' -> 'ppl'
-  'be' -> 'B'
-  'to B' -> '2B'
-  'too late' -> '2L8'
-  'late' -> 'L8'
-  'later' -> 'L8r'
-  'matter' -> 'M8r'
-  'great' -> 'gr8'
-  'wait' -> 'w8'
-  'waiting' -> 'w8N'
-  'hate' -> '8'
-  'greater than' -> '>'
-  'less than' -> '<'
-  'thanks' -> '10X'
-  'thank you' -> '10U'
-  'threesome ' -> '3SUM'
-  'I see' -> 'IC'
-  'excellent' -> 'XLNT'
-  'excel' -> 'XL'
-  'at work' -> '@WRK'
-  'work' -> 'WRK'
-  'at' -> '@'
-  'don''t' -> 'DNT'  
-  'effective' -> 'Fective'
-  'for' -> '4'
-  'to' -> '2'
-  'too' -> '2'
-  'the' -> 'D'
-  'their' -> 'Dr'
-  'that' -> 'Dt'
-  'this' -> 'Ds'
-  'than' -> 'Dn'
-  'then' -> 'Dn'  
-  'your' -> 'Ur'
-  'from' -> 'frm'
-  'increase' -> 'incr.'
-  'increases' -> 'incr.'
-  'decrease' -> 'decr.'
-  'decreases' -> 'decr.'
-  'development' -> 'dev.mnt'
-  'dev.mnt' ->  'dev'
-  'system' -> 'sys'
-  'see' -> 'C'
-  substring: ' ,' -> ','
-  substring: ', ' -> ','
-  substring: ' .' -> '.'
-  substring: ' :' -> ':'
-  substring: ': ' -> ':'
-  substring: ' ;' -> ';'
-  substring: '; ' -> ';'
-  substring: 'too' -> '2'
-  substring: 'to' -> '2'
-  substring: 'hate' -> '8'
-  substring: 'eat' -> '8'
-  substring: 'ait' -> '8'
-  substring: 'two' -> '2'
-  substring: 'tree' -> '3'
-  substring: 'ttre' -> '3'
-  substring: 'tre' -> '3'
-  substring: 'four' -> '4'
-  substring: 'for' -> '4'
-  substring: 'see' -> 'C'
-  substring: ' "' -> '"'
-  substring: '" ' -> '"'
-  substring: ' (' -> '('
-  substring: '( ' -> '('
-  substring: ' )' -> ')'
-  substring: ') ' -> ')'
-  substring: '& ' -> '&'
-  substring: ' &' -> '&'
- )</textarea>
+	<textarea id='tweeeeeeeeeetProgram'  cols='60' rows='128'></textarea>
  </form>
 <h1><a name="SendFeedback">Send Feedback</a></h1>
 <p>
