@@ -250,7 +250,7 @@ describe("Tweet Shortener", function() {
 			replaceMaps = [ [false, '0123456789', '0-9'] ];
 			maxSize = 10;
 			tweet = '0123456789';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -263,7 +263,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 6;
 			tweet = 'aa bb cc ';
 			var tweetThatFits = 'a b c ';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -276,7 +276,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 7;
 			tweet = 'aa bb cc ';
 			var tweetThatFits = 'a b cc ';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -289,7 +289,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 8;
 			tweet = 'aa aa aa ';
 			var tweetThatFits = 'a a a ';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -302,7 +302,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 0;
 			tweet = 'AAA Aaa aaa ';
 			var tweetThatFits = 'XX Xx xx ';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -315,7 +315,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 0;
 			tweet = 'AAA Bbb ccc ';
 			var tweetThatFits = 'Xx yY ZZ ';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -328,7 +328,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 0;
 			tweet = 'today tonight acclamatory';
 			var tweetThatFits = '2day 2night acclama2ry';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -341,7 +341,7 @@ describe("Tweet Shortener", function() {
 			maxSize = 0;
 			tweet = 'today to me';
 			var tweetThatFits = 'today 2 me';
-			target = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+			target = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 			
 			target.shortenTweet(tweet);
 			shortenedTweet = target.replaceUntilFit(replaceMaps, maxSize);
@@ -354,7 +354,7 @@ describe("Tweet Shortener", function() {
 });
 
 describe("Integration tests", function() {
-	describe("Parser with shortener", function() {	
+	describe("Parser with interpreter", function() {	
 		var program;
 		var tweet;
 		var shortenedTweet;

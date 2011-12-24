@@ -174,7 +174,7 @@ parser = (function(){
           pos = savedPos1;
         }
         var result2 = result1 !== null
-          ? (function(key, arg) { tweeeeeeeeeet.shortener.shortenTweet(arg); })(result1[1], result1[3])
+          ? (function(key, arg) { tweeeeeeeeeet.interpreter.shortenTweet(arg); })(result1[1], result1[3])
           : null;
         if (result2 !== null) {
           var result0 = result2;
@@ -253,7 +253,7 @@ parser = (function(){
           pos = savedPos1;
         }
         var result2 = result1 !== null
-          ? (function(length, arg) { return tweeeeeeeeeet.shortener.replaceUntilFit(arg, length); })(result1[3], result1[7])
+          ? (function(length, arg) { return tweeeeeeeeeet.interpreter.replaceUntilFit(arg, length); })(result1[3], result1[7])
           : null;
         if (result2 !== null) {
           var result0 = result2;

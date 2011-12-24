@@ -3,13 +3,13 @@ start = shortenTweetMethod result:replaceUntilFitMethod? { return result; }
 
 shortenTweetMethod = ws key:shortenTweetKeyword
                      ws arg:string
-                     { tweeeeeeeeeet.shortener.shortenTweet(arg); }
+                     { tweeeeeeeeeet.interpreter.shortenTweet(arg); }
 
 replaceUntilFitMethod = ws replaceUntilFitKeyword
                         ws length:integer
                         ws withAbbreviationsKeyword
                         ws arg:replaceArray
-                        { return tweeeeeeeeeet.shortener.replaceUntilFit(arg, length); }
+                        { return tweeeeeeeeeet.interpreter.replaceUntilFit(arg, length); }
 
 shortenTweetKeyword "shortenTweet:" = first:"shortenTweet" last:[:] { return first + last }
 

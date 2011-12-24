@@ -135,7 +135,7 @@ tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 };
 
 
-tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
+tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject = function () {
 	var _tweet = '';
 		
 	return {
@@ -168,5 +168,5 @@ tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject = function () {
 };
 
 
-tweeeeeeeeeet.shortener = tweeeeeeeeeet.createTweeeeeeeeeetInstructionsInterpreterObject();
+tweeeeeeeeeet.interpreter = tweeeeeeeeeet.createTweeeeeeeeeetInterpreterObject();
 

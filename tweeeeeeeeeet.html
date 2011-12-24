@@ -1,7 +1,7 @@
 <html>
 <head>
-<script src='shortener.js'></script>
 <script src='tweeeeeeeeeetParser.js'></script>
+<script src='tweeeeeeeeeetInterpreter.js'></script>
 <script src='localstorage.js'></script>
 <script src='simplerestclient.js'></script>
 
@@ -9,7 +9,7 @@
 <script type="text/javascript">
 	"use strict";
 	
-	var TweeeeeeeeeetInstructionsVersion = '0.6 (beta)';	
+	var TweeeeeeeeeetInstructionsVersion = '0.6 (beta)';
 	
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
@@ -26,7 +26,6 @@
 			node.textContent = text;
 		}	
 	}
-	
 	
 	function escapeQuotationMarkCharacters(text) {
 		return text.replace(/'/g, "''");
@@ -73,7 +72,7 @@
 	function showLength() {
 		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
 	}
-
+	
 	function SaveTweeeeeeeeeetInstructionsOnLocalStorage() {
 		var tweeeeeeeeeetInstructions = document.getElementById('tweeeeeeeeeetProgram').value;
 		var size = tweeeeeeeeeetInstructions.length;
