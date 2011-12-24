@@ -103,7 +103,7 @@
 		while(tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Code_' + i.toString())) {
 			tweeeeeeeeeetInstructions += tweeeeeeeeeet.localStorage.getItem('TweeeeeeeeeetInstructions_Code_' + i.toString());
 			++i;
-		};
+		}
 
 		document.getElementById('tweeeeeeeeeetProgram').value = tweeeeeeeeeetInstructions;
 	}
@@ -143,7 +143,7 @@
 			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
 			if (!document.getElementById('saveButton').disabled) {
 				return "Tweeeeeeeeeet instructions has been modified but not saved."; 
-			}; 
+			} 
 		};
 	};	
 </script>
