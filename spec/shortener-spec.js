@@ -1,3 +1,6 @@
+/*jsl:import ../tweeeeeeeeeetParser.js */
+/*jsl:import ../tweeeeeeeeeetInterpreter.js */
+
 describe("Tweet Shortener", function() {
 
 	it("Run-time environment info", function() {

@@ -8,10 +8,11 @@
 <script src='simplerestclient.js'></script>
 
 <script type="text/javascript">
-	"use strict";
-
-	var tweeeeeeeeeetInstructions;
+    /*jsl:import tweeeeeeeeeetParser.js*/
 	
+	//
+	// Html helper
+	//
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
 			return node.innerText;
@@ -28,6 +29,62 @@
 		}	
 	}
 	
+
+	//
+	// Twet edit and shorten
+	//
+	function showLength() {
+		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
+	}
+
+	function shorten() {
+
+		function showResultLength() {
+			var result = document.getElementById('result').value;
+			var tweetSize = tweeeeeeeeeet.createTweetSizeObject(result);
+			var resultWithSortenedLinksLength = tweetSize.lengthWithShortenedUrls();
+			setNodeText(document.getElementById('resultLength'), resultWithSortenedLinksLength);
+			
+			var resultLength = result.length;
+			setNodeText(document.getElementById('shortenedLink'), '');
+			if (resultLength !== resultWithSortenedLinksLength) {
+				setNodeText(document.getElementById('shortenedLink'), '(Links will be shortened)');
+			}
+		}
+		
+		function escapeQuotationMarkCharacters(text) {
+			return text.replace(/'/g, "''");
+		}
+	
+		showLength();
+		
+		setNodeText(document.getElementById('errorMessage'), '');
+		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
+		var parseResult = '';
+		try{
+			 parseResult = parser.parse(program);
+		}
+		catch(e) {
+			setNodeText(document.getElementById('errorMessage'), e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message);
+			return;
+		}
+		finally {		
+			document.getElementById('result').value = parseResult;
+			
+			if (parseResult === '') { parseResult = ' '; } 		
+			parseResult = escape(parseResult);
+			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
+		}
+		
+		showResultLength();
+	}
+
+	
+	//
+	// Tweeeeeeeeeet Instructions init and load and save
+	//
+	var tweeeeeeeeeetInstructions;
+
 	function setTweeeeeeeeeetProgram(code) {
 		var linesCount = code.match(/\n/g).length;
 		document.getElementById('tweeeeeeeeeetProgram').rows = linesCount + 5;
@@ -47,53 +104,7 @@
 		document.getElementById('saveButton').disabled = saveButtonDisabled; 
 		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
 	}
-
-	function escapeQuotationMarkCharacters(text) {
-		return text.replace(/'/g, "''");
-	}
-
-	function showResultLength() {
-		var result = getNodeText(document.getElementById('result'));
-		var tweetSize = tweeeeeeeeeet.createTweetSizeObject(result);
-		var resultWithSortenedLinksLength = tweetSize.lengthWithShortenedUrls();
-		setNodeText(document.getElementById('resultLength'), resultWithSortenedLinksLength);
-		
-		var resultLength = result.length;
-		setNodeText(document.getElementById('shortenedLink'), '');
-		if (resultLength !== resultWithSortenedLinksLength) {
-			setNodeText(document.getElementById('shortenedLink'), '(Links will be shortened)');
-		}
-	}
-
-	function shorten() {
 	
-		showLength();
-		
-		setNodeText(document.getElementById('errorMessage'), '');
-		var program = "shortenTweet: '" + escapeQuotationMarkCharacters(document.getElementById('yourTweet').value) + "' " +  document.getElementById('tweeeeeeeeeetProgram').value;
-		var parseResult = '';
-		try{
-			 parseResult = parser.parse(program);
-		}
-		catch(e) {
-			setNodeText(document.getElementById('errorMessage'), e.name + ' Error: (' + e.line + ',' + e.column + ') ' + e.message);
-			return;
-		}
-		finally {		
-			setNodeText(document.getElementById('result'), parseResult);
-			
-			if (parseResult === '') { parseResult = ' '; } 		
-			parseResult = escape(parseResult);
-			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
-		}
-		
-		showResultLength();
-	}
-
-	function showLength() {
-		setNodeText(document.getElementById('yourTweetLength'), document.getElementById('yourTweet').value.length);
-	}
-
 	function createTweeeeeeeeeetInstructionsObject(localStorage, tweetLanguage) {
 		
 		var _localStorage = localStorage;
@@ -353,7 +364,29 @@
 			}						
 		};
 	}
+	
+	function saveButtonEventHandler() { 
+		shorten();
+		if (getNodeText(document.getElementById('errorMessage')).length === 0) {
+			loadAndSaveButtonsReset();
 			
+			tweeeeeeeeeetInstructions.saveOnLocalStorage(getTweeeeeeeeeetProgram());
+			var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();				
+			simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', getTweeeeeeeeeetProgram());				
+		} else {
+			alert('Correct Syntax error before saving. ');
+		}
+	}
+	
+	function loadButtonEventHandler() { 
+		loadAndSaveButtonsReset();
+		setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.loadFromLocalStorage());
+		setNodeText(document.getElementById('errorMessage'), '');
+	}
+	
+	//
+	// Navigation for Tweeeeeeeeeet Instructions language and away from the page
+	//				
 	function setTweeeeeeeeeetLanguage(tweetLanguage) {
 		if (!document.getElementById('saveButton').disabled) {
 			var confirmResultIsOk = confirm(
@@ -381,43 +414,32 @@
 		} 
 	}
 	
+	function onBeforeUnloadEventHandler() { 
+		document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
+		if (!document.getElementById('saveButton').disabled) {
+			return 'Tweeeeeeeeeet instructions has been modified but not saved.'; 
+		} 
+	}
+	
+	//
+	// Wire up
+	//
 	window.onload = function() {
-		document.getElementById('shortenButton').onclick = function() { shorten(); };
-		document.getElementById('yourTweet').onchange = function() { showLength(); };
+		// Twet edit and shorten
+		document.getElementById('shortenButton').onclick = shorten;
+		document.getElementById('yourTweet').onchange = showLength;
+		
+		// Tweeeeeeeeeet Instructions init and load and save
 		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { loadAndSaveButtonsSet(false); };
-		document.getElementById('saveButton').onclick = function() { 
-			shorten();
-			if (getNodeText(document.getElementById('errorMessage')).length === 0) {
-				loadAndSaveButtonsReset();
-				
-				tweeeeeeeeeetInstructions.saveOnLocalStorage(getTweeeeeeeeeetProgram());
-				var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();				
-				simpleRestClient.post('http://www.luca.minudel.it/CollectModifiedTweeeeeeeeeetInstructions.aspx', 'text/plain', getTweeeeeeeeeetProgram());				
-			} else {
-				alert('Correct Syntax error before saving. ');
-			}
-		};
-		document.getElementById('loadButton').onclick = function() { 
-			loadAndSaveButtonsReset();
-			setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.loadFromLocalStorage());
-		};
-		document.getElementById('tweetsLanguage-ita').onclick = function() {
-			setTweeeeeeeeeetLanguage('ita');		
-		};
-		document.getElementById('tweetsLanguage-eng').onclick = function() {
-			setTweeeeeeeeeetLanguage('eng');		
-		};
-				
-		window.onbeforeunload = function() { 
-			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
-			if (!document.getElementById('saveButton').disabled) {
-				return 'Tweeeeeeeeeet instructions has been modified but not saved.'; 
-			} 
-		};
-		
+		document.getElementById('saveButton').onclick = saveButtonEventHandler;
+		document.getElementById('loadButton').onclick = loadButtonEventHandler;
 		loadAndSaveButtonsReset();
-		setTweeeeeeeeeetLanguage('eng');		
 		
+		// Navigation for Tweeeeeeeeeet Instructions language and away from the page
+		document.getElementById('tweetsLanguage-ita').onclick = function() { setTweeeeeeeeeetLanguage('ita'); };
+		document.getElementById('tweetsLanguage-eng').onclick = function() { setTweeeeeeeeeetLanguage('eng'); };				
+		window.onbeforeunload = onBeforeUnloadEventHandler;				
+		setTweeeeeeeeeetLanguage('eng');				
 	};	
 </script>
 <style type="text/css">
@@ -468,10 +490,10 @@
 			<li><a href="#SendFeedback">Send Feedback</a></li>
 			<li><a href="https://github.com/lucaminudel/tweeeeeeeeeet/downloads" target="_blank">Download the latest version</a></li>
 			<li><a href="spec/SpecRunner.html" target="_blank">Run tests</a></li>
-			<li><a id='tweetsLanguage-ita' href="#"style="display:block;" >Switch to Italian tweets</a></li>
-			<li><a id='tweetsLanguage-eng'href="#" style="display:block;">Switch to English tweets</a></li>
+			<li><a id='tweetsLanguage-ita' href="#" style="display:block;">Switch to Italian tweets</a></li>
+			<li><a id='tweetsLanguage-eng' href="#" style="display:block;">Switch to English tweets</a></li>
 		</ul>
-	<br style="clear:left"/>
+	<br style="clear:left;"/>
 	</div>
 	<h1>Your tweeeeeeeeeet</h1>
 	<textarea id='yourTweet' rows='4' cols='80'></textarea>
