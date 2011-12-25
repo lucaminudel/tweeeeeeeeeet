@@ -1,13 +1,16 @@
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 <script src='tweeeeeeeeeetParser.js'></script>
 <script src='tweeeeeeeeeetInterpreter.js'></script>
 <script src='localstorage.js'></script>
 <script src='simplerestclient.js'></script>
 
-
 <script type="text/javascript">
 	"use strict";
+
+	var tweeeeeeeeeetInstructions;
 	
 	function getNodeText(node) {
 		if(typeof node.innerText !== 'undefined'){
@@ -35,6 +38,16 @@
 		return document.getElementById('tweeeeeeeeeetProgram').value;
 	}
 	
+	function loadAndSaveButtonsReset() {
+		document.getElementById('saveButton').disabled = true; 
+		document.getElementById('loadButton').disabled = true;
+	}
+	
+	function loadAndSaveButtonsSet(saveButtonDisabled) {
+		document.getElementById('saveButton').disabled = saveButtonDisabled; 
+		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
+	}
+
 	function escapeQuotationMarkCharacters(text) {
 		return text.replace(/'/g, "''");
 	}
@@ -86,10 +99,10 @@
 		var _localStorage = localStorage;
 		var _tweetLanguage = tweetLanguage;
 		
-		var _versionKey = { 'eng': 'TweeeeeeeeeetInstructions_Version' };
-		var _instructionsKey = { 'eng': 'TweeeeeeeeeetInstructions_Code_' };
+		var _versionKey = { 'eng': 'TweeeeeeeeeetInstructions_Version', 'ita': 'TweeeeeeeeeetInstrITA_Version'};
+		var _instructionsKey = { 'eng': 'TweeeeeeeeeetInstructions_Code_', 'ita': 'TweeeeeeeeeetInstrITA_Code_' };
 
-		var _version = { 'eng': '0.6 (beta)' };
+		var _version = { 'eng': '0.6 (beta)', 'ita': '0.7 (beta)' };
 		var _instructions = { 'eng': 
 			"replaceUntilFitsInto: 140\n"
 			+ "withAbbreviations:\n"
@@ -218,6 +231,86 @@
 			+ "  substring: ') ' -> ')'\n"
 			+ "  substring: '& ' -> '&'\n"
 			+ "  substring: ' &' -> '&'\n"
+			+ " )",
+			'ita': 
+			"replaceUntilFitsInto: 140\n"
+			+ "withAbbreviations:\n"
+			+ "(\n"
+			+ "  substring: '  ' -> ' '\n"
+			+ "  'uno' -> '1'\n"
+			+ "  'due' -> '2'\n"
+			+ "  'tre' -> '3'\n"
+			+ "  'quattro' -> '4'\n"
+			+ "  'cinque' -> '5'\n"
+			+ "  'sei' -> '6'\n"
+			+ "  'sette' -> '7'\n"
+			+ "  'otto' -> '8'\n"
+			+ "  'nove' -> '9'\n"
+			+ "  'dieci' -> '10'\n"
+			+ "  'cento' -> '100'\n"
+			+ "  'mille' -> '1000'\n"
+			+ "  'primo' -> '1mo'\n"
+			+ "  'secondo' -> '2ndo'\n"
+			+ "  'terzo' -> '3zo'\n"
+			+ "  'quarto' -> '4to'\n"
+			+ "  'quinto' -> '5to'\n"
+			+ "  'sesto' -> '6to'\n"
+			+ "  'settimo' -> '7mo'\n"
+			+ "  'ottavo' -> '8vo'\n"
+			+ "  'nono' -> '9no'\n"
+			+ "  'decimo' -> '10mo'\n"
+			+ "  'ventesimo' -> '20mo'\n"
+			+ "  'centesimo' -> '100mo'\n"
+			+ "  'per' -> 'x'\n"			
+			+ "  'perche' -> 'xKe'\n"
+			+ "  'perché' -> 'xKé'\n"
+			+ "  'perchè' -> 'xKè'\n"
+			+ "  'piu' -> '+'\n"
+			+ "  'piú' -> '+'\n"
+			+ "  'più' -> '+'\n"
+			+ "  'meno' -> '-'\n"			
+			+ "  'ci' -> 'C'\n"
+			+ "  'di' -> 'D'\n"
+			+ "  'ti' -> 'T'\n"
+			+ "  'vi' -> 'V'\n"			
+			+ "  'non' -> 'nn'\n"			
+			+ "  substring: 'tre' -> '3'\n"
+			+ "  substring: 'chi' -> 'Ki'\n"
+			+ "  substring: 'che' -> 'Ke'\n"
+			+ "  substring: 'ché' -> 'Ké'\n"
+			+ "  substring: 'chè' -> 'Kè'\n"
+			+ "  substring: 'cappa' -> 'K'\n"
+			+ "  substring: 'acca' -> 'H'\n"
+			+ "  substring: 'bi' -> 'B'\n"
+			+ "  substring: 'ci' -> 'C'\n"
+			+ "  substring: 'di' -> 'D'\n"
+			+ "  substring: 'effe' -> 'F'\n"
+			+ "  substring: 'gi' -> 'G'\n"
+			+ "  substring: 'elle' -> 'L'\n"
+			+ "  substring: 'emme' -> 'M'\n"
+			+ "  substring: 'enne' -> 'N'\n"
+			+ "  substring: 'pi' -> 'P'\n"
+			+ "  substring: 'cu' -> 'Q'\n"
+			+ "  substring: 'erre' -> 'R'\n"
+			+ "  substring: 'esse' -> 'S'\n"
+			+ "  substring: 'ti' -> 'T'\n"
+			+ "  substring: 'vi' -> 'V'\n"
+			+ "  substring: 'gei' -> 'J'\n"
+			+ "  substring: ' ,' -> ','\n"
+			+ "  substring: ', ' -> ','\n"
+			+ "  substring: ' .' -> '.'\n"
+			+ "  substring: ' :' -> ':'\n"
+			+ "  substring: ': ' -> ':'\n"
+			+ "  substring: ' ;' -> ';'\n"
+			+ "  substring: '; ' -> ';'\n"
+			+ "  substring: ' \"' -> '\"'\n"
+			+ "  substring: '\" ' -> '\"'\n"
+			+ "  substring: ' (' -> '('\n"
+			+ "  substring: '( ' -> '('\n"
+			+ "  substring: ' )' -> ')'\n"
+			+ "  substring: ') ' -> ')'\n"
+			+ "  substring: '& ' -> '&'\n"
+			+ "  substring: ' &' -> '&'\n"
 			+ " )"
 		};
 		
@@ -226,7 +319,7 @@
 			program: function() { return _instructions[_tweetLanguage]; },
 
 			localStorageIsEmpty: function() {
-				return !tweeeeeeeeeet.localStorage.hasOwnProperty('TweeeeeeeeeetInstructions_Version');
+				return !tweeeeeeeeeet.localStorage.hasOwnProperty(_versionKey[_tweetLanguage]);
 			},
 			
 			loadFromLocalStorage: function() {
@@ -256,25 +349,46 @@
 				}		
 				_localStorage.removeItem(_instructionsKey[_tweetLanguage] + blocks.toString());
 				
-				_localStorage.setItem(_versionKey[_tweetLanguage], version());				
+				_localStorage.setItem(_versionKey[_tweetLanguage], this.version());				
 			}						
 		};
 	}
+			
+	function setTweeeeeeeeeetLanguage(tweetLanguage) {
+		if (!document.getElementById('saveButton').disabled) {
+			var confirmResultIsOk = confirm(
+				'Are you sure you want to change the tweet language?\n\n'
+				+ 'Tweeeeeeeeeet instructions has been modified but not saved.\n\n'
+				+ 'Press OK to continue, or Cancel to stay on the current language.',
+				'Switch tweets language'
+				);
+			
+			if (confirmResultIsOk === false) {
+				return;				
+			}
+		}
 	
-	var tweeeeeeeeeetInstructions = createTweeeeeeeeeetInstructionsObject(tweeeeeeeeeet.localStorage, 'eng');
+		tweeeeeeeeeetInstructions = createTweeeeeeeeeetInstructionsObject(tweeeeeeeeeet.localStorage, tweetLanguage);
+		loadAndSaveButtonsSet(true);
+		setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.program());
 		
+		if( tweetLanguage === 'eng') {
+			document.getElementById('tweetsLanguage-ita').style.display = 'block';
+			document.getElementById('tweetsLanguage-eng').style.display = 'none';
+		} else {
+			document.getElementById('tweetsLanguage-eng').style.display = 'block';
+			document.getElementById('tweetsLanguage-ita').style.display = 'none';
+		} 
+	}
+	
 	window.onload = function() {
-		document.getElementById('shortenButton').onclick = shorten;
-		document.getElementById('yourTweet').onchange = showLength;
-		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { 
-			document.getElementById('saveButton').disabled = false; 
-			document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
-		};
+		document.getElementById('shortenButton').onclick = function() { shorten(); };
+		document.getElementById('yourTweet').onchange = function() { showLength(); };
+		document.getElementById('tweeeeeeeeeetProgram').onchange = function() { loadAndSaveButtonsSet(false); };
 		document.getElementById('saveButton').onclick = function() { 
 			shorten();
 			if (getNodeText(document.getElementById('errorMessage')).length === 0) {
-				document.getElementById('saveButton').disabled = true; 
-				document.getElementById('loadButton').disabled = true;
+				loadAndSaveButtonsReset();
 				
 				tweeeeeeeeeetInstructions.saveOnLocalStorage(getTweeeeeeeeeetProgram());
 				var simpleRestClient = tweeeeeeeeeet.createSimpleRestClientObject();				
@@ -284,21 +398,25 @@
 			}
 		};
 		document.getElementById('loadButton').onclick = function() { 
-			document.getElementById('saveButton').disabled = true; 
-			document.getElementById('loadButton').disabled = true;
-			
+			loadAndSaveButtonsReset();
 			setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.loadFromLocalStorage());
+		};
+		document.getElementById('tweetsLanguage-ita').onclick = function() {
+			setTweeeeeeeeeetLanguage('ita');		
+		};
+		document.getElementById('tweetsLanguage-eng').onclick = function() {
+			setTweeeeeeeeeetLanguage('eng');		
 		};
 				
 		window.onbeforeunload = function() { 
 			document.getElementById('yourTweet').focus(); // force pending onchange events to update the 'changed' state
 			if (!document.getElementById('saveButton').disabled) {
-				return "Tweeeeeeeeeet instructions has been modified but not saved."; 
+				return 'Tweeeeeeeeeet instructions has been modified but not saved.'; 
 			} 
 		};
 		
-		document.getElementById('loadButton').disabled = tweeeeeeeeeetInstructions.localStorageIsEmpty();
-		setTweeeeeeeeeetProgram(tweeeeeeeeeetInstructions.program());
+		loadAndSaveButtonsReset();
+		setTweeeeeeeeeetLanguage('eng');		
 		
 	};	
 </script>
@@ -341,7 +459,7 @@
 
 </style>
 
-<title>tweeeeeeeeeet 0.6 (beta)</title>
+<title>tweeeeeeeeeet 0.7 (beta)</title>
 </head>
 <body>
 <form>
@@ -350,6 +468,8 @@
 			<li><a href="#SendFeedback">Send Feedback</a></li>
 			<li><a href="https://github.com/lucaminudel/tweeeeeeeeeet/downloads" target="_blank">Download the latest version</a></li>
 			<li><a href="spec/SpecRunner.html" target="_blank">Run tests</a></li>
+			<li><a id='tweetsLanguage-ita' href="#"style="display:block;" >Switch to Italian tweets</a></li>
+			<li><a id='tweetsLanguage-eng'href="#" style="display:block;">Switch to English tweets</a></li>
 		</ul>
 	<br style="clear:left"/>
 	</div>
@@ -372,7 +492,7 @@
 	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
     <span id='errorMessage' style='color:red;'></span>
 	<br />
-	<button type='button' id='loadButton' disabled='true'>Load</button>
+	<button type='button' id='loadButton' >Load</button>
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -380,9 +500,9 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<button type='button' id='saveButton' disabled='true'>Save</button>
+	<button type='button' id='saveButton' >Save</button>
 	<br />
-	<textarea id='tweeeeeeeeeetProgram'  cols='60' rows='128'></textarea>
+	<textarea id='tweeeeeeeeeetProgram' cols='60' rows='128'></textarea>
  </form>
 <h1><a name="SendFeedback">Send Feedback</a></h1>
 <p>
