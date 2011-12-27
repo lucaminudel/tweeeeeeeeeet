@@ -512,6 +512,10 @@
     color: #333333;
     cursor: pointer;	
 }
+
+.button {
+	background-color: transparent;
+}
 .menu{
 	width: 100%; /* The menu should be the entire width of it's surrounding object, in this case the whole page */
 	font:11px Arial, Helvetica, sans-serif; /* Sets the font size and type */
@@ -570,7 +574,7 @@
 	<br />
 	<textarea id='yourTweet' rows='4' cols='80'></textarea>
 	<br />
-	<button type='button' id='shortenButton'>Shorten your tweet</button>   <label>Length: </label><span id='yourTweetLength' >0</span>
+	<button type='button' id='shortenButton' class='button'>Shorten your tweet</button>   <label>Length: </label><span id='yourTweetLength' >0</span>
 	<br />
 	<br />
 	
@@ -588,8 +592,8 @@
 	<br />
 	<br />
 	<br />
-	<button type='button' id='showAdvancedViewButton' style=display:block;>Advanced view &gt;&gt;</button>
-	<button type='button' id='showSimpleViewButton' style=display:none;>&lt;&lt; Simple view</button> 
+	<button type='button' id='showAdvancedViewButton' class='button' style=display:block;>Advanced view &gt;&gt;</button>
+	<button type='button' id='showSimpleViewButton' class='button' style=display:none;>&lt;&lt; Simple view</button> 
 	<span id='advancedView' style=display:none;>
 		<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
 		<dfn>The following code define how tweets are shortened. Change it to customize how tweets are shortened.</dfn>
@@ -598,7 +602,7 @@
 		<br />
 		<span id='errorMessage' style='color:red;'></span>
 		<br />
-		<button type='button' id='loadButton' >Load</button>
+		<button type='button' id='loadButton' class='button'>Load</button>
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -606,7 +610,7 @@
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<button type='button' id='saveButton' >Save</button>
+		<button type='button' id='saveButton' class='button'>Save</button>
 		<br />
 		<textarea id='tweeeeeeeeeetProgram' cols='60' rows='128'></textarea>
 	</span>
