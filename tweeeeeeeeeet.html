@@ -2,10 +2,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-<script src='tweeeeeeeeeetParser.js'></script>
-<script src='tweeeeeeeeeetInterpreter.js'></script>
-<script src='localstorage.js'></script>
-<script src='simplerestclient.js'></script>
+<script type='text/javascript' src='tweeeeeeeeeetParser.js'></script>
+<script type='text/javascript' src='tweeeeeeeeeetInterpreter.js'></script>
+<script type='text/javascript' src='localstorage.js'></script>
+<script type='text/javascript' src='simplerestclient.js'></script>
+<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 
 <script type="text/javascript">
     /*jsl:import tweeeeeeeeeetParser.js*/
@@ -73,7 +74,10 @@
 			
 			if (parseResult === '') { parseResult = ' '; } 		
 			parseResult = escape(parseResult);
-			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" > <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
+			
+
+			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" style="vertical-align: text-top;"> <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
+			document.getElementById('custom-tweet-button-link').href = 'https://twitter.com/intent/tweet?text=' + parseResult + '&related=lukadotnet';
 		}
 		
 		showResultLength();
@@ -460,6 +464,20 @@
 		} 
 	}
 	
+	function toggleView() {
+		function toggleDisplay(me){
+			if (me.style.display === 'block') {
+				me.style.display = 'none';
+			} else {
+				me.style.display = 'block';
+			}
+		}
+		
+		toggleDisplay(document.getElementById('showAdvancedViewButton'));
+		toggleDisplay(document.getElementById('showSimpleViewButton'));
+		toggleDisplay(document.getElementById('advancedView'));	
+	}
+	
 	//
 	// Wire up
 	//
@@ -477,11 +495,24 @@
 		// Navigation for Tweeeeeeeeeet Instructions language and away from the page
 		document.getElementById('tweetsLanguage-ita').onclick = function() { setTweeeeeeeeeetLanguage('ita'); };
 		document.getElementById('tweetsLanguage-eng').onclick = function() { setTweeeeeeeeeetLanguage('eng'); };				
+		document.getElementById('showAdvancedViewButton').onclick = toggleView;
+		document.getElementById('showSimpleViewButton').onclick = toggleView; 
 		window.onbeforeunload = onBeforeUnloadEventHandler;				
 		setTweeeeeeeeeetLanguage('eng');				
 	};	
 </script>
 <style type="text/css">
+#custom-tweet-button a {
+	padding: 0 3px 0 19px;
+	background: url('http://a4.twimg.com/images/favicon.ico') 1px center no-repeat;
+	border: 1px solid #ccc;
+	font: 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    display: inline-block;
+    color: #333333;
+    cursor: pointer;	
+	-moz-border-radius: 4px 4px 4px 4px;
+    -moz-box-shadow: 0 1px 0 #F8F8F8;
+}
 .menu{
 	width: 100%; /* The menu should be the entire width of it's surrounding object, in this case the whole page */
 	font:11px Arial, Helvetica, sans-serif; /* Sets the font size and type */
@@ -520,7 +551,7 @@
 
 </style>
 
-<title>tweeeeeeeeeet 0.7 (beta)</title>
+<title>tweeeeeeeeeet 0.8 (beta)</title>
 </head>
 <body>
 <form>
@@ -535,6 +566,9 @@
 	<br style="clear:left;"/>
 	</div>
 	<h1>Your tweeeeeeeeeet</h1>
+	<dfn>Type your long tweet here and click the 'Shorten your tweet' button to compress it.</dfn>
+	<br />
+	<br />
 	<textarea id='yourTweet' rows='4' cols='80'></textarea>
 	<br />
 	<button type='button' id='shortenButton'>Shorten your tweet</button>   <label>Length: </label><span id='yourTweetLength' >0</span>
@@ -545,30 +579,46 @@
 	<textarea id='result' readonly=true rows='4' cols='80' style='background-color:#d0e4fe;'>Your tweet shortened here.</textarea>
 	<br />
 	<label>Length: </label><span id='resultLength' >0</span> <span id='shortenedLink' ></span>  
-	<span id='copyClipboard'>
+	&nbsp;&nbsp;
+	<span id=custom-tweet-button>
+	<a id=custom-tweet-button-link href="https://twitter.com/intent/tweet?text=&related=lukadotnet" target=_blank>Tweet</a>
+	</span>
+	&nbsp;&nbsp;&nbsp;
+	<span id='copyClipboard' valign="middle">
 	</span>
 	<br />
 	<br />
-
-	<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
-    <span id='errorMessage' style='color:red;'></span>
 	<br />
-	<button type='button' id='loadButton' >Load</button>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	<button type='button' id='saveButton' >Save</button>
-	<br />
-	<textarea id='tweeeeeeeeeetProgram' cols='60' rows='128'></textarea>
+	<button type='button' id='showAdvancedViewButton' style=display:block;>Advanced view &gt;&gt;</button>
+	<button type='button' id='showSimpleViewButton' style=display:none;>&lt;&lt; Simple view</button> 
+	<span id='advancedView' style=display:none;>
+		<h1>Tweeeeeeeeeet instructions to shorten your tweeeeeeeeeet</h1>
+		<dfn>The following code define how tweets are shortened. Change it to customize how tweets are shortened.</dfn>
+		<br />
+		<dfn>Edit the code: change abbreviations priorities and add and remove abbreviations.</dfn>
+		<br />
+		<span id='errorMessage' style='color:red;'></span>
+		<br />
+		<button type='button' id='loadButton' >Load</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type='button' id='saveButton' >Save</button>
+		<br />
+		<textarea id='tweeeeeeeeeetProgram' cols='60' rows='128'></textarea>
+	</span>
  </form>
 <h1><a name="SendFeedback">Send Feedback</a></h1>
-<p>
-	To share your improvements to the <dfn>Tweeeeeeeeeet instructions</dfn>, to suggest new features, to report bugs and to contribute with code.<br />
-	You can send your feedback <a href='https://github.com/lucaminudel/tweeeeeeeeeet/issues' target="_blank">here on github</a> and  <a href='https://twitter.com/lukadotnet' target="_blank">here on twitter</a>.
+<p>	
+	Please let me know if Tweeeeeeeeeet doesn't work for you or if you require something Tweeeeeeeeeet 
+	<br />
+	doesn't currently support.
+	<br />
+	I'm always happy to hear your suggestions, contact me <a href='https://github.com/lucaminudel/tweeeeeeeeeet/issues' target="_blank">here on github</a> and <a href='https://twitter.com/lukadotnet' target="_blank">here on twitter</a>.
 </p>
 </body>
 </html> 
