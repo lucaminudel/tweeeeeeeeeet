@@ -72,11 +72,12 @@
 			document.getElementById('result').value = parseResult;
 			
 			if (parseResult === '') { parseResult = ' '; } 		
+			parseResultForTwitter = encodeURI(parseResult);
 			parseResult = escape(parseResult);
 			
 
 			document.getElementById('copyClipboard').innerHTML = '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="110" height="14" id="clippy" style="vertical-align: text-top;"> <param name="movie" value="lib/clippy.swf"/> <param name="allowScriptAccess" value="always" /> <param name="quality" value="high" /> <param name="scale" value="noscale" /> <param NAME="FlashVars" value="text=' + parseResult + '"> <param name="bgcolor" value="#FFFFFF"> <embed src="lib/clippy.swf" width="110" height="14" name="clippy" quality="high" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" FlashVars="text=' + parseResult + '" bgcolor="#FFFFFF" />  <\/object>';
-			document.getElementById('custom-tweet-button-link').href = 'https://twitter.com/intent/tweet?text=' + parseResult + '&related=lukadotnet';
+			document.getElementById('custom-tweet-button-link').href = 'https://twitter.com/intent/tweet?text=' + parseResultForTwitter + '&related=lukadotnet';
 		}
 		
 		showResultLength();
@@ -342,6 +343,7 @@
 			+ "  substring: 'emme' -> 'M'\n"
 			+ "  substring: 'enne' -> 'N'\n"
 			+ "  substring: 'pi' -> 'P'\n"
+			+ "  substring: 'ccu' -> 'Q'\n"
 			+ "  substring: 'cu' -> 'Q'\n"
 			+ "  substring: 'qu' -> 'Q'\n"
 			+ "  substring: 'erre' -> 'R'\n"
@@ -551,12 +553,12 @@
 .menu ul li a:visited{ /* This bit just makes sure the text color doesn't change once you've visited a link */
 	color: #fff;
 	text-decoration: none;}
-
 </style>
 
 <title>tweeeeeeeeeet 0.8 (beta)</title>
 </head>
 <body>
+<a href="https://github.com/lucaminudel/tweeeeeeeeeet" target=_blank><img style="position: absolute; top: 30; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
 <form>
 	<div class="menu">
 		<ul>
@@ -623,5 +625,11 @@
 	<br />
 	I'm always happy to hear your suggestions, contact me <a href='https://github.com/lucaminudel/tweeeeeeeeeet/issues' target="_blank">here on github</a> and <a href='https://twitter.com/lukadotnet' target="_blank">here on twitter</a>.
 </p>
+<footer>
+	<a id="github" href="https://github.com/lucaminudel/tweeeeeeeeeet">
+	  <span>Fork me on GitHub!</span>
+	  <span>Get free lemonade!</span>
+	</a>
+</footer>
 </body>
 </html> 
