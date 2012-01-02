@@ -202,6 +202,15 @@ describe("Tweet Shortener", function() {
 				expect(length).toEqual(22 + 21);
 			});
 			
+			it("when the tweet contains 1 url with a query string should count 20 for the length of the url", function() {
+				tweet = '0123456789 http://www.neverworkintheory.org/Default.aspx?p=177 0123456789';
+				target = tweeeeeeeeeet.createTweetSizeObject(tweet);
+
+				var length = target.lengthWithShortenedUrls();
+				
+				expect(length).toEqual(22 + 20);
+			});
+
 		});
 
 		describe("fits()", function() {

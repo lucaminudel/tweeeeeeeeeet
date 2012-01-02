@@ -108,7 +108,7 @@ tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 	
 	return {		
 		lengthWithShortenedUrls: function() {
-			var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?/;
+			var urlRegExp = /(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([\-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_=]*)?/;
 			var length = _tweet.length;
 			var shortUrlsLength = 0;
 			var tweet = _tweet;
@@ -119,7 +119,7 @@ tweeeeeeeeeet.createTweetSizeObject = function (tweet, maxSize) {
 				length = tweet.length;
 				shortUrlsLength += 19;
 
-				if (match[0].indexOf('s') > 0) {
+				if (match[2].indexOf('s') >= 0) {
 					shortUrlsLength += 1;
 				}						
 			}
