@@ -20,6 +20,6 @@ try it [on-line] (http://www.luca.minudel.it/tweeeeeeeeeet/) or:
 
 ### libraries used, thanks to
 - http://pegjs.majda.cz/ PEG.js used to create the parser of the Tweeeeeeeeeet instructions
-- http://pivotal.github.com/jasmine/ for the tests in the spec folder
+- https://jasmine.github.io/ for the tests in the spec folder
 - https://github.com/mojombo/clippy/ for the copy to clipboard flash library
 - http://www.jslint.com/ for the check of the JavaScript code quality
